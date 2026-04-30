@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CodePrep</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="bg-system">
+        <div class="grid-overlay"></div>
+        <div class="ambient-orb orb-primary" style="top: -10%; left: 10%;"></div>
+        <div class="ambient-orb orb-secondary" style="bottom: -10%; right: 10%;"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-code text-gradient"></i> CodePrep
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dsa-sheet.html">DSA Sheet</a>
+            <a href="leaderboard.html" style="color:#fbbf24;"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
+        </div>
+        <a href="index.html" class="nav-cta" id="logoutBtn" style="border-color: #ef4444; color: #ef4444;"><i class="fa-solid fa-power-off"></i> Logout</a>
+    </nav>
+
+    <main class="dashboard-container">
+        <header class="dash-header">
+            <div>
+                <h1 class="dash-title">Dashboard</h1>
+                <p class="dash-subtitle">Your CodePrep progress overview</p>
+            </div>
+            <button class="btn btn-ghost" style="padding: 10px 20px; font-size: 0.9rem;">Edit Profile</button>
+        </header>
+
+        <div class="dashboard-grid">
+            
+            <!-- Left Column: User Context -->
+            <div class="dash-left">
+                <!-- User Profile Card -->
+                <div class="dash-card profile-card">
+                    <div class="profile-avatar">
+                        <img id="dashAvatar" src="https://ui-avatars.com/api/?name=User&background=f97316&color=fff&size=120" alt="Avatar">
+                    </div>
+                    <h2 id="dashName">Pratham Mishra</h2>
+                    <p class="username" id="dashUsername">@pratham2978</p>
+                    <div class="profile-rank">
+                        <i class="fa-solid fa-trophy text-gradient"></i> Rank <span id="dashRank">#--</span>
+                    </div>
+                </div>
+
+                <!-- Streak Card -->
+                <div class="dash-card streak-card">
+                    <div class="streak-header">
+                        <i class="fa-solid fa-fire text-gradient"></i> <h3>Streak</h3>
+                    </div>
+                    <div class="streak-stats">
+                        <div class="streak-item">
+                            <span class="streak-value text-cyan" id="dashStreakCurrent">0</span>
+                            <span class="streak-label">CURRENT</span>
+                        </div>
+                        <div class="streak-item">
+                            <span class="streak-value" id="dashStreakBest">0</span>
+                            <span class="streak-label">BEST EVER</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Snapshot Stats -->
+                <div class="dash-card small-stats-card">
+                    <div class="small-stat">
+                        <span class="s-value text-gradient" id="dashTotalPoints">0</span>
+                        <span class="s-label">Total Points</span>
+                    </div>
+                    <div class="small-stat">
+                        <span class="s-value" id="dashQuizzesTaken">0</span>
+                        <span class="s-label">Quizzes Taken</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Activity and Progress -->
+            <div class="dash-right">
+                
+                <!-- Top Summary Numbers -->
+                <div class="top-stats-row">
+                    <div class="dash-card summary-box">
+                        <span class="num text-gradient" id="dashSolved">0</span>
+                        <span class="lbl">SOLVED</span>
+                    </div>
+                    <div class="dash-card summary-box">
+                        <span class="num" id="dashSubmissions">0</span>
+                        <span class="lbl">SUBMISSIONS</span>
+                    </div>
+                    <div class="dash-card summary-box">
+                        <span class="num text-cyan" id="dashEasy">0</span>
+                        <span class="lbl">EASY</span>
+                    </div>
+                    <div class="dash-card summary-box">
+                        <span class="num" style="color: #fbbf24;" id="dashMedium">0</span>
+                        <span class="lbl">MEDIUM</span>
+                    </div>
+                    <div class="dash-card summary-box">
+                        <span class="num" style="color: #ef4444;" id="dashHard">0</span>
+                        <span class="lbl">HARD</span>
+                    </div>
+                </div>
+
+                <!-- Problem Progress Bars -->
+                <div class="dash-card progress-card">
+                    <h3 class="card-title">Problem Progress</h3>
+                    
+                    <div class="prog-item">
+                        <div class="prog-info">
+                            <span style="color: #2dd4bf; font-weight: 600;">Easy</span>
+                            <span class="prog-count"><span id="progCountEasy">0</span> <span style="color:#64748b; font-size:0.8rem">/ 350</span></span>
+                        </div>
+                        <div class="prog-bar-bg"><div class="prog-bar-fill" id="progBarEasy" style="width: 0%; background: #2dd4bf;"></div></div>
+                    </div>
+
+                    <div class="prog-item">
+                        <div class="prog-info">
+                            <span style="color: #fbbf24; font-weight: 600;">Medium</span>
+                            <span class="prog-count"><span id="progCountMedium">0</span> <span style="color:#64748b; font-size:0.8rem">/ 500</span></span>
+                        </div>
+                        <div class="prog-bar-bg"><div class="prog-bar-fill" id="progBarMedium" style="width: 0%; background: #fbbf24;"></div></div>
+                    </div>
+
+                    <div class="prog-item">
+                        <div class="prog-info">
+                            <span style="color: #ef4444; font-weight: 600;">Hard</span>
+                            <span class="prog-count"><span id="progCountHard">0</span> <span style="color:#64748b; font-size:0.8rem">/ 150</span></span>
+                        </div>
+                        <div class="prog-bar-bg"><div class="prog-bar-fill" id="progBarHard" style="width: 0%; background: #ef4444;"></div></div>
+                    </div>
+                </div>
+
+                <!-- Activity Heatmap -->
+                <div class="dash-card heatmap-card">
+                    <h3 class="card-title">Activity Heatmap <span style="font-size: 0.8rem; color: #64748b; font-weight: 400;">(last 365 days)</span></h3>
+                    <div class="heatmap-container" id="heatmapContainer">
+                        <!-- Heatmap grid generated by JS -->
+                    </div>
+                    <div class="heatmap-legend">
+                        <span>Less</span>
+                        <div class="hg-cell level-0"></div>
+                        <div class="hg-cell level-1"></div>
+                        <div class="hg-cell level-2"></div>
+                        <div class="hg-cell level-3"></div>
+                        <div class="hg-cell level-4"></div>
+                        <span>More</span>
+                    </div>
+                </div>
+
+                <!-- Recent Submissions -->
+                <div class="dash-card table-card">
+                    <h3 class="card-title">Recent Submissions</h3>
+                    <div class="table-responsive">
+                        <table class="q-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:left;">PROBLEM</th>
+                                    <th>STATUS</th>
+                                    <th>LANG</th>
+                                    <th>TIME</th>
+                                    <th>WHEN</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashRecentSubs">
+                                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

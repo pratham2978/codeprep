@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Interviews | CodePrep</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .mock-header {
+            padding: 120px 40px 40px;
+            text-align: center;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto 100px;
+            padding: 0 20px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        .dash-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 32px;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .dash-card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Match Widget */
+        .match-widget {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .match-selectors {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .m-select {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            flex: 1;
+            min-width: 200px;
+            outline: none;
+        }
+        
+        .m-select option { background: #1e1e1e; }
+
+        .btn-match {
+            background: linear-gradient(135deg, var(--primary), #e66800);
+            color: #000;
+            border: none;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(255, 115, 0, 0.3);
+        }
+
+        .btn-match:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(255, 115, 0, 0.5);
+        }
+
+        /* Upcoming List */
+        .upcoming-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .upcoming-item {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 16px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .upcoming-item:hover {
+            border-color: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .u-info h4 { font-size: 1.1rem; margin-bottom: 6px; }
+        .u-info p { font-size: 0.85rem; color: #94a3b8; margin: 0; display: flex; align-items: center; gap: 8px; }
+        
+        .u-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            color: #000; font-weight: bold; font-size: 1.2rem;
+        }
+
+        .btn-join {
+            padding: 8px 16px;
+            background: rgba(34,197,94,0.15);
+            color: #4ade80;
+            border: 1px solid #4ade80;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .btn-join:hover {
+            background: #4ade80;
+            color: #000;
+        }
+        
+        .btn-disabled {
+            background: rgba(255,255,255,0.05);
+            color: #64748b;
+            border-color: transparent;
+            cursor: not-allowed;
+        }
+
+        /* AI Bot Widget */
+        .ai-widget {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), transparent);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            text-align: center;
+        }
+        
+        .ai-icon {
+            font-size: 3rem;
+            color: #10b981;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4));
+        }
+
+    </style>
+</head>
+<body>
+    <div class="bg-system">
+        <div class="grid-overlay"></div>
+        <div class="ambient-orb orb-primary" style="top: 20%; left: -10%;"></div>
+        <div class="ambient-orb orb-secondary" style="bottom: 10%; right: -10%;"></div>
+    </div>
+
+    <!-- Main Navbar -->
+    <nav class="navbar gsap-nav">
+        <div class="nav-brand">
+            <i class="fa-solid fa-code text-gradient"></i> CodePrep
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dsa-sheet.html">DSA Sheet</a>
+            <a href="features.html" style="color: var(--text-main);">Features</a>
+        </div>
+        <a href="#" class="nav-cta">Get Started</a>
+    </nav>
+
+    <!-- Header -->
+    <header class="mock-header">
+        <h1 class="hero-title" style="font-size: 2.8rem; margin-bottom: 16px;">
+            Peer-to-Peer <span class="text-gradient">Mock Interviews</span>
+        </h1>
+        <p class="hero-subtitle" style="margin: 0 auto; max-width: 650px;">
+            Practice live coding, system design, and communication skills with thousands of other candidates via real-time video pairing.
+        </p>
+    </header>
+
+    <!-- AI Interview Modal -->
+    <div id="ai-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.88); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(12px);">
+        <div style="background: #141414; border: 1px solid rgba(16, 185, 129, 0.3); padding: 36px; border-radius: 20px; width: 92%; max-width: 680px; box-shadow: 0 30px 80px rgba(0,0,0,0.6);">
+            
+            <!-- Header -->
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+                <div style="width: 52px; height: 52px; border-radius: 50%; background: radial-gradient(circle, #10b981, #047857); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #fff; animation: pulse 2s infinite; flex-shrink: 0;">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div>
+                    <h3 style="margin: 0; font-size: 1.2rem; color: #fff;">AI Interviewer <span style="font-size: 0.65rem; background: #10b981; color:#000; padding:2px 8px; border-radius: 10px; vertical-align: middle; font-weight: 700;">LIVE</span></h3>
+                    <div id="ai-topic-tag" style="font-size: 0.82rem; color: #10b981; margin-top: 2px;">Topic: Data Structures & Algorithms — Medium</div>
+                </div>
+                <button onclick="endAiInterview()" style="margin-left: auto; background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">Exit</button>
+            </div>
+
+            <!-- Question Box -->
+            <div style="background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; min-height: 90px;">
+                <div style="font-size: 0.75rem; color: #10b981; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em;"><i class="fa-solid fa-robot"></i> AI Interviewer</div>
+                <p id="ai-question-text" style="color: #f0fdf4; font-size: 1.05rem; line-height: 1.65; margin: 0;">Loading question...</p>
+            </div>
+
+            <!-- User Answer Box -->
+            <div style="margin-bottom: 20px;">
+                <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em;"><i class="fa-solid fa-user"></i> Your Answer</div>
+                <textarea id="ai-user-answer" rows="4" placeholder="Type your answer here... (Be thorough! Mention examples, time-complexity, trade-offs etc.)" style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 14px; color: #fff; font-size: 0.95rem; font-family: 'Inter', sans-serif; resize: none; outline: none; box-sizing: border-box; transition: 0.2s;" onfocus="this.style.borderColor='rgba(16,185,129,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"></textarea>
+            </div>
+
+            <!-- AI Feedback Box (shown after Submit) -->
+            <div id="ai-feedback-box" style="display: none; background: rgba(255,115,0,0.06); border: 1px solid rgba(255,115,0,0.2); border-radius: 10px; padding: 16px; margin-bottom: 20px;">
+                <div style="font-size: 0.75rem; color: #ff7300; font-weight: 700; margin-bottom: 8px; text-transform: uppercase;"><i class="fa-solid fa-lightbulb"></i> AI Feedback</div>
+                <p id="ai-feedback-text" style="color: #fef3c7; font-size: 0.92rem; line-height: 1.6; margin: 0;"></p>
+            </div>
+
+            <!-- Progress & Controls -->
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <div style="font-size: 0.85rem; color: #64748b; flex: 1;">Question <span id="q-current">1</span> of <span id="q-total">5</span></div>
+                <button id="btn-submit-answer" onclick="submitAnswer()" style="padding: 10px 22px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.35); border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: 0.2s;">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Answer
+                </button>
+                <button id="btn-next-q" onclick="nextAiQuestion()" style="display:none; padding: 10px 22px; background: #ff7300; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: 0.2s;">
+                    Next Question <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); transform: scale(0.98); }
+            50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); transform: scale(1.02); }
+            100% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); transform: scale(0.98); }
+        }
+    </style>
+
+    <!-- Dashboard -->
+    <main class="dashboard-grid">
+        
+        <!-- Left Side: Match & Upcoming -->
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+            
+            <!-- Quick Match -->
+            <div class="dash-card">
+                <h2><i class="fa-solid fa-bolt text-gradient"></i> Start an Interview Now</h2>
+                <div class="match-widget">
+                    <div class="match-selectors">
+                        <select class="m-select" id="topic-select">
+                            <option value="dsa">Data Structures & Algorithms</option>
+                            <option value="system-design">System Design (HLD/LLD)</option>
+                            <option value="frontend">Frontend & React</option>
+                            <option value="backend">Backend & Databases</option>
+                        </select>
+                        <select class="m-select" id="difficulty-select">
+                            <option value="easy">Easy (Intern Level)</option>
+                            <option value="medium" selected>Medium (New Grad)</option>
+                            <option value="hard">Hard (Senior Level)</option>
+                        </select>
+                    </div>
+                    <button class="btn-match" onclick="findMatch()">
+                        <i class="fa-solid fa-satellite-dish"></i> Find a Match (ETA: 1m 20s)
+                    </button>
+                    <p id="match-status" style="text-align: center; color: #fbbf24; display: none; margin-top: 10px; font-weight: 500;">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i> Searching for an available peer...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Upcoming Interviews -->
+            <div class="dash-card">
+                <h2><i class="fa-regular fa-calendar-check"></i> Scheduled Interviews</h2>
+                <div class="upcoming-list">
+                    <!-- Item 1 -->
+                    <div class="upcoming-item">
+                        <div style="display: flex; gap: 16px; align-items: center;">
+                            <div class="u-avatar">S</div>
+                            <div class="u-info">
+                                <h4>Sarah J.</h4>
+                                <p><i class="fa-regular fa-clock"></i> Today at 8:00 PM • DSA Medium</p>
+                            </div>
+                        </div>
+                        <a href="#" class="btn-join" onclick="alert('Joining Interview Room! Microphone and Camera enabled.')">Join Room</a>
+                    </div>
+                    
+                    <!-- Item 2 -->
+                    <div class="upcoming-item">
+                        <div style="display: flex; gap: 16px; align-items: center;">
+                            <div class="u-avatar" style="background: #3b82f6;">M</div>
+                            <div class="u-info">
+                                <h4>Michael C.</h4>
+                                <p><i class="fa-regular fa-clock"></i> Tomorrow at 2:30 PM • System Design</p>
+                            </div>
+                        </div>
+                        <span class="btn-join btn-disabled" title="Room opens 5 minutes before">Starts later</span>
+                    </div>
+                </div>
+                <button style="width: 100%; margin-top: 20px; padding: 12px; background: rgba(255,255,255,0.05); color: #fff; border: 1px dashed rgba(255,255,255,0.2); border-radius: 8px; cursor: pointer; transition: 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                    <i class="fa-solid fa-plus"></i> Schedule for Later
+                </button>
+            </div>
+            
+        </div>
+
+        <!-- Right Side: Stats & AI -->
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+            
+            <!-- AI Bot -->
+            <div class="dash-card ai-widget">
+                <i class="fa-solid fa-robot ai-icon"></i>
+                <h3 style="font-size: 1.3rem; margin-bottom: 12px;">AI Interviewer <span style="font-size: 0.7rem; vertical-align: top; background: #10b981; color:#000; padding:2px 6px; border-radius:10px;">BETA</span></h3>
+                <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 24px; line-height: 1.5;">Not ready for a real human? practice answering behavioral & technical questions with our voice-enabled AI bot.</p>
+                <button class="btn-match" style="background: rgba(16, 185, 129, 0.15); color: #10b981; box-shadow: none; border: 1px solid rgba(16, 185, 129, 0.3); width: 100%;" onclick="startAiInterview()">
+                    <i class="fa-solid fa-microphone"></i> Start AI Session
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="dash-card" style="padding: 24px;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px;"><i class="fa-solid fa-chart-line"></i> Your Statistics</h3>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                    <span style="color: #94a3b8;">Interviews Completed</span>
+                    <span style="font-weight: bold; font-family: 'Fira Code', monospace;">12</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                    <span style="color: #94a3b8;">Average Rating</span>
+                    <span style="font-weight: bold; font-family: 'Fira Code', monospace; color: #fbbf24;"><i class="fa-solid fa-star"></i> 4.8</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: #94a3b8;">Current Streak</span>
+                    <span style="font-weight: bold; font-family: 'Fira Code', monospace; color: #ff7300;"><i class="fa-solid fa-fire"></i> 3 Days</span>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        function findMatch() {
+            const btn = document.querySelector('.btn-match');
+            const status = document.getElementById('match-status');
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting to matchmaking servers...';
+            btn.style.opacity = '0.8';
+            btn.style.pointerEvents = 'none';
+            status.style.display = 'block';
+            setTimeout(() => {
+                status.innerHTML = '<i class="fa-solid fa-check" style="color:#4ade80;"></i> Match found! Creating secure video room...';
+                status.style.color = '#4ade80';
+                setTimeout(() => {
+                    window.location.href = "video-room.html";
+                    btn.innerHTML = '<i class="fa-solid fa-satellite-dish"></i> Find a Match (ETA: 1m 20s)';
+                    btn.style.opacity = '1';
+                    btn.style.pointerEvents = 'all';
+                    status.style.display = 'none';
+                    status.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Searching...';
+                    status.style.color = '#fbbf24';
+                }, 1500);
+            }, 2500);
+        }
+
+        // ============================================================
+        // LOCALLY-TRAINED AI QUESTION BANK (No API key needed)
+        // Adding more questions here is all you need to do to expand AI
+        // ============================================================
+        const AI_QUESTION_BANK = {
+            'dsa': {
+                'easy': [
+                    { q: "What is an Array and how is it different from a Linked List?", feedback: "Great question to test basics! A strong answer mentions: contiguous memory (Array) vs nodes with pointers (Linked List), O(1) random access for arrays vs O(n) for linked lists, and dynamic sizing advantages of linked lists." },
+                    { q: "What is a Stack? Give a real-world example of where it is used.", feedback: "The best answers include: LIFO (Last In First Out) principle, call-stack in programming, undo/redo in editors, or browser history." },
+                    { q: "Explain the concept of a Queue and mention two of its real-world applications.", feedback: "FIFO (First In First Out). Applications include: print spoolers, CPU task scheduling, BFS traversal." },
+                    { q: "What is the time complexity of Binary Search and when can it be applied?", feedback: "O(log n). Binary search requires the dataset to be sorted. Mention that each iteration halves the search space." },
+                    { q: "What is recursion? Explain with an example like Fibonacci.", feedback: "Recursion is a function calling itself. Fibonacci: F(n) = F(n-1) + F(n-2). Mention base case is critical to prevent infinite loops." },
+                ],
+                'medium': [
+                    { q: "Explain the Two Sum problem. What is the optimal approach and what is its time complexity?", feedback: "Brute force is O(n²). Optimal is to use a HashMap storing complement values, giving O(n) time with O(n) space. Walk through the logic step by step." },
+                    { q: "What is a Binary Search Tree? What are its key properties and what is the average time complexity of insert, delete, and search?", feedback: "BST: left child < parent < right child. Average: O(log n) for all ops. Worst case is O(n) when tree is unbalanced (e.g. all insertions are sorted). Mention AVL/Red-Black trees to balance." },
+                    { q: "Explain BFS vs DFS. When would you prefer one over the other?", feedback: "BFS uses a Queue, explores level-by-level, good for shortest path. DFS uses a Stack (or recursion), good for deep path finding and cycle detection." },
+                    { q: "What is Dynamic Programming? Explain the difference between Memoization and Tabulation.", feedback: "DP = breaking problems into overlapping subproblems. Memoization = top-down (recursive + cache). Tabulation = bottom-up (iterative table build)." },
+                    { q: "Given a sorted array, explain how you would search for a target using Binary Search and code it.", feedback: "Maintain low, high, mid pointers. mid = (low + high) / 2. If arr[mid]==target return mid, if target > arr[mid] search right, else search left. Time: O(log n)." },
+                ],
+                'hard': [
+                    { q: "Design an LRU Cache. What data structures would you use and why?", feedback: "Use a HashMap + Doubly Linked List. HashMap gives O(1) key lookup, DLL maintains insertion order. Total O(1) for get and put. Very common in FAANG interviews." },
+                    { q: "Explain Dijkstra's algorithm. What is its time complexity and what kind of graphs does it work on?", feedback: "Greedy shortest path algorithm using a priority queue (min-heap). Works on graphs with non-negative edge weights. Time: O((V + E) log V) with a heap." },
+                    { q: "What is the Knapsack Problem? Explain the DP approach.", feedback: "0/1 Knapsack: for each item choose include or exclude. Build a 2D DP table of size (n_items+1) x (capacity+1). O(n*W) time and space." },
+                    { q: "Describe the approach to find the longest common subsequence (LCS) of two strings.", feedback: "2D DP: if chars match, dp[i][j] = 1 + dp[i-1][j-1]. Else dp[i][j] = max(dp[i-1][j], dp[i][j-1]). Result at dp[m][n]. O(m*n) time and space." },
+                    { q: "How does a Segment Tree work and when would you use it over a Fenwick Tree?", feedback: "Segment trees support range queries and point updates in O(log n). Use when updates are frequent (point/range). Fenwick Trees are simpler with less memory but segment trees are more flexible for custom range ops." },
+                ],
+            },
+            'system-design': {
+                'easy': [
+                    { q: "What is the difference between horizontal and vertical scaling?", feedback: "Vertical = add more power to one machine (CPU, RAM). Horizontal = add more machines. Horizontal is preferred for modern distributed systems. Mention trade-offs like cost and replica consistency." },
+                    { q: "What is a CDN (Content Delivery Network) and why is it used?", feedback: "CDN caches content at geographically distributed servers (edge nodes) near users, reducing latency and load on origin server. Good for static assets." },
+                    { q: "What is the role of a Load Balancer in system design?", feedback: "Distributes incoming requests across multiple servers to prevent overload. Strategies: Round Robin, Least Connections, IP Hash. Ensures high availability." },
+                ],
+                'medium': [
+                    { q: "Design a URL shortening service like bit.ly. What are the key components?", feedback: "Key components: unique ID generator (base62 encoding), mapping store (Key-Value DB like Redis/DynamoDB), write endpoint, redirect endpoint. Discuss scale: 1000 writes/sec, 100K reads/sec. Long-tail caching for popular URLs." },
+                    { q: "How would you design a notification system (push, email, SMS) at scale?", feedback: "Components: API Gateway, Message Queue (Kafka/RabbitMQ), worker microservices for each channel, retry logic, rate limiting per user, preference center. Mention idempotency." },
+                    { q: "Explain the CAP theorem. Give an example of a CP system and AP system.", feedback: "CAP: Consistency, Availability, Partition Tolerance. Can only guarantee 2. CP example: HBase (consistent but not always available). AP example: Cassandra (available but eventually consistent)." },
+                ],
+                'hard': [
+                    { q: "Design Twitter's news feed system. How would you handle fan-out and millions of followers?", feedback: "Two approaches: push (fan-out-on-write, pre-compute feed) vs pull (fan-out-on-read). Hybrid: push for non-celebrities, pull for mega-influencers (K threshold). Use Redis sorted sets for feed. Discuss timeline service + interest ranking." },
+                    { q: "How would you design a distributed rate limiter at the API gateway level?", feedback: "Options: Token Bucket, Sliding Window Log, Fixed Window Counter. Distributed: centralized Redis counter with Lua scripts for atomic ops, or sliding window approximation. Discuss failure modes and consistency trade-offs." },
+                ],
+            },
+            'frontend': {
+                'easy': [
+                    { q: "What is the difference between var, let, and const in JavaScript?", feedback: "var: function-scoped, hoisted. let: block-scoped, not hoisted to TDZ. const: block-scoped, cannot be reassigned (but object properties can change). Best practice: use const by default, let for loop vars." },
+                    { q: "What is the Virtual DOM in React and why does it matter?", feedback: "Virtual DOM: lightweight JS object that mirrors real DOM. React diffs old vs new VDOM and applies minimal real DOM updates (reconciliation). Improves performance by batching DOM operations." },
+                    { q: "Explain event bubbling and event capturing in the browser.", feedback: "Bubbling: event propagates from target element up to root. Capturing: event propagates from root down to target. stopPropagation() prevents further propagation. Most events bubble by default." },
+                ],
+                'medium': [
+                    { q: "What are React Hooks? Explain useState and useEffect with examples.", feedback: "Hooks let you use state/lifecycle in functional components. useState: `const [count, setCount] = useState(0)`. useEffect: runs side effects after render. Empty deps = once on mount. Cleanup function prevents memory leaks." },
+                    { q: "Explain the concept of closure in JavaScript with an example.", feedback: "A closure is a function that remembers its outer scope even after the outer function has returned. Example: counter function returning increment. Useful for data encapsulation and module patterns." },
+                    { q: "What is the difference between CSS Flexbox and Grid? When do you use each?", feedback: "Flexbox: 1D layout (row or column). Grid: 2D layout (rows AND columns simultaneously). Use Flexbox for nav bars, card rows. Use Grid for page layouts, dashboards with both-axis control." },
+                ],
+                'hard': [
+                    { q: "How does React's reconciliation algorithm (Fiber) work?", feedback: "Fiber rearchitected React's reconciliation: breaks rendering into small units of work (fibers), can pause and resume (concurrent mode), prioritizes updates. Allows time-slicing so UI never blocks. Key: assignes priority to updates." },
+                    { q: "What are JavaScript Promises and how is async/await a syntactic improvement?", feedback: "Promises: objects representing eventual completion/failure of async op. .then()/.catch() chains. async/await: syntactic sugar over promises. async functions always return a promise. await pauses execution. Try/catch replaces .catch(). Much more readable." },
+                ],
+            },
+            'backend': {
+                'easy': [
+                    { q: "What is REST API? What are its key constraints and HTTP methods used?", feedback: "REST = Representational State Transfer. Constraints: stateless, client-server, uniform interface. Methods: GET (read), POST (create), PUT (update/replace), PATCH (partial update), DELETE. Resources are nouns in URL." },
+                    { q: "What is the difference between SQL and NoSQL databases?", feedback: "SQL: relational, schema, ACID transactions, vertical scaling (MySQL, PostgreSQL). NoSQL: flexible schema, BASE, horizontal scaling (MongoDB, Cassandra). Use SQL for complex joins, NoSQL for scale and flexibility." },
+                ],
+                'medium': [
+                    { q: "Explain database indexing. When does an index help and when can it hurt?", feedback: "Index speeds up read queries using B-Tree or Hash structures. Hurts: slows write ops (insert/update/delete must rebuild index), takes storage. Create on columns used in WHERE, JOIN, ORDER BY. Avoid over-indexing." },
+                    { q: "What is a microservices architecture? What are the trade-offs compared to a monolith?", feedback: "Microservices: independently deployable services around business domains. Pros: independent scaling, tech flexibility, fault isolation. Cons: distributed system complexity, network latency, eventual consistency challenges. Start with monolith and split when scaling demands it." },
+                    { q: "What is JWT (JSON Web Token)? How is it used for authentication?", feedback: "JWT = Header.Payload.Signature. Header: algorithm. Payload: claims (user ID, role). Signature: HMAC_SHA256(base64(header)+base64(payload), secret). Stateless: server just verifies signature. Downside: cannot invalidate before expiry without a blocklist." },
+                ],
+                'hard': [
+                    { q: "Explain the differences between ACID and BASE properties in databases.", feedback: "ACID: Atomicity (all-or-nothing), Consistency (valid state), Isolation (concurrent txns don't interfere), Durability (committed writes persist). BASE: Basically Available, Soft state, Eventually consistent. ACID for banking. BASE for social media feeds." },
+                    { q: "How would you implement idempotency in an API for payment processing?", feedback: "Generate a unique idempotency key client-side for each request. Server stores key + response in Redis/DB. On duplicate request, return cached response. Key: atomic check-and-store using Redis SET NX (set if not exists). Include key TTL." },
+                ],
+            },
+        };
+
+        const TOPIC_LABELS = { dsa: 'Data Structures & Algorithms', 'system-design': 'System Design', frontend: 'Frontend & React', backend: 'Backend & Databases' };
+        const DIFF_LABELS  = { easy: 'Intern Level', medium: 'New Grad', hard: 'Senior Level' };
+
+        let currentAiQuestions = [];
+        let currentQIndex = 0;
+
+        function loadQuestionsFromDropdowns() {
+            const topic = document.getElementById('topic-select').value;
+            const diff  = document.getElementById('difficulty-select').value;
+            const bank  = AI_QUESTION_BANK[topic] || AI_QUESTION_BANK['dsa'];
+            currentAiQuestions = (bank[diff] || bank['medium']).slice(); // copy array
+            // Shuffle for variety
+            currentAiQuestions.sort(() => Math.random() - 0.5);
+            currentQIndex = 0;
+            const tag = TOPIC_LABELS[topic] + ' — ' + DIFF_LABELS[diff];
+            const el = document.getElementById('ai-topic-tag');
+            if(el) el.innerText = 'Topic: ' + tag;
+        }
+
+        // Re-load questions whenever user changes dropdowns
+        document.getElementById('topic-select').addEventListener('change', loadQuestionsFromDropdowns);
+        document.getElementById('difficulty-select').addEventListener('change', loadQuestionsFromDropdowns);
+
+        function startAiInterview() {
+            loadQuestionsFromDropdowns();
+            document.getElementById('ai-modal').style.display = 'flex';
+            document.getElementById('ai-feedback-box').style.display = 'none';
+            document.getElementById('btn-next-q').style.display = 'none';
+            document.getElementById('btn-submit-answer').style.display = 'inline-flex';
+            document.getElementById('ai-user-answer').value = '';
+            renderCurrentQuestion();
+        }
+
+        function renderCurrentQuestion() {
+            const total = currentAiQuestions.length;
+            const item  = currentAiQuestions[currentQIndex];
+            document.getElementById('ai-question-text').innerText = item.q;
+            document.getElementById('q-current').innerText = currentQIndex + 1;
+            document.getElementById('q-total').innerText   = total;
+            document.getElementById('ai-feedback-box').style.display = 'none';
+            document.getElementById('ai-user-answer').value = '';
+            document.getElementById('btn-next-q').style.display = 'none';
+            document.getElementById('btn-submit-answer').style.display = 'inline-flex';
+        }
+
+        function submitAnswer() {
+            const answer = document.getElementById('ai-user-answer').value.trim();
+            if (!answer) {
+                document.getElementById('ai-user-answer').style.borderColor = '#ef4444';
+                setTimeout(() => document.getElementById('ai-user-answer').style.borderColor = 'rgba(255,255,255,0.1)', 1500);
+                return;
+            }
+            const fb = currentAiQuestions[currentQIndex].feedback;
+            document.getElementById('ai-feedback-text').innerText = fb;
+            document.getElementById('ai-feedback-box').style.display = 'block';
+            document.getElementById('btn-submit-answer').style.display = 'none';
+            document.getElementById('btn-next-q').style.display = currentQIndex < currentAiQuestions.length - 1 ? 'inline-flex' : 'none';
+            if (currentQIndex >= currentAiQuestions.length - 1) {
+                document.getElementById('btn-next-q').style.display = 'none';
+                document.getElementById('ai-question-text').innerText = '🎉 Interview complete! Great effort. Review the feedback above and keep practising!';
+            }
+        }
+
+        function nextAiQuestion() {
+            currentQIndex++;
+            if (currentQIndex < currentAiQuestions.length) renderCurrentQuestion();
+        }
+
+        function endAiInterview() {
+            document.getElementById('ai-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

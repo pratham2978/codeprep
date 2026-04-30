@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium DSA Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="bg-system">
+        <div class="grid-overlay"></div>
+        <div class="ambient-orb orb-primary"></div>
+        <div class="ambient-orb orb-secondary"></div>
+    </div>
+
+    <nav class="navbar gsap-nav">
+        <div class="nav-brand">
+            <i class="fa-solid fa-code text-gradient"></i> CodePrep
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dsa-sheet.html">DSA Sheet</a>
+            <a href="leaderboard.html" style="color:#fbbf24;"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
+            <a href="features.html">Features</a>
+        </div>
+        <a href="login.html" class="nav-cta" id="navGetStartedBtn">Get Started</a>
+    </nav>
+
+    <main class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <div class="badge gsap-fade-up">
+                    <span class="badge-dot"></span> V2.0 is Live
+                </div>
+
+                <h1 class="hero-title gsap-fade-up">
+                    Master DSA For <br>
+                    <span class="text-gradient">Top Placements</span>
+                </h1>
+
+                <p class="hero-subtitle gsap-fade-up">
+                    A structured, immersive learning path. Solve curated problems, watch expert breakdowns, and land
+                    your dream tech role.
+                </p>
+
+                <div class="hero-actions gsap-fade-up">
+                    <a href="dsa-sheet.html" class="btn btn-glow">
+                        Start Practicing <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="features.html" class="btn btn-ghost">View Curriculum</a>
+                </div>
+
+                <div class="social-proof gsap-fade-up">
+                    <div class="avatars">
+                        <img src="https://ui-avatars.com/api/?name=R&background=f97316&color=fff" alt="User">
+                        <img src="https://ui-avatars.com/api/?name=A&background=f43f5e&color=fff" alt="User">
+                        <img src="https://ui-avatars.com/api/?name=S&background=8b5cf6&color=fff" alt="User">
+                    </div>
+                    <p>Trusted by <strong>1.5M+</strong> developers</p>
+                </div>
+            </div>
+
+            <div class="hero-visual" id="scene">
+                <div class="glass-card ide-window parallax" data-depth="0.1" data-rotate="0.05">
+                    <div class="ide-header">
+                        <div class="mac-controls">
+                            <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                        </div>
+                        <div class="ide-tabs">two_sum.cpp</div>
+                    </div>
+                    <div class="ide-body">
+                        <div id="code-container" class="code-editor"></div>
+
+                        <div class="console-output" id="success-box">
+                            <i class="fa-solid fa-check-circle"></i> All 125 test cases passed!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card float-card placement-card parallax" data-depth="0.3" data-rotate="0.1"
+                    style="top: 10%; right: -5%;">
+                    <div class="user-avatar bg-amz"><i class="fa-brands fa-aws"></i></div>
+                    <div class="card-text">
+                        <h4>Rohit Sharma</h4>
+                        <p>SDE 2 at Amazon</p>
+                    </div>
+                </div>
+
+                <div class="glass-card float-card tech-badge parallax" data-depth="0.5" data-rotate="0.2"
+                    style="bottom: 30%; left: -10%;">
+                    <i class="fa-brands fa-react text-cyan"></i>
+                </div>
+
+                <div class="glass-card float-card streak-card parallax" data-depth="0.2" data-rotate="-0.08"
+                    style="bottom: 15%; right: 10%;">
+                    <div class="fire-icon"><i class="fa-solid fa-fire"></i></div>
+                    <div class="card-text">
+                        <h4>145 Day Streak</h4>
+                        <p>Top 1% of users</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+
+</html>

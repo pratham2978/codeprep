@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zen Focus Room | CodePrep</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(-45deg, #080808, #1c0d02, #0f0a05, #080808);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Abstract glowing orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.6;
+        }
+        .orb-1 { width: 300px; height: 300px; background: rgba(255, 115, 0, 0.15); top: 10%; left: 20%; animation: float 10s ease-in-out infinite; }
+        .orb-2 { width: 400px; height: 400px; background: rgba(255, 184, 77, 0.1); bottom: 10%; right: 10%; animation: float 14s ease-in-out infinite reverse; }
+
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-30px) scale(1.1); }
+            100% { transform: translateY(0px) scale(1); }
+        }
+
+        /* Snow Particles */
+        #snow-container {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .snowflake {
+            position: absolute; background: #fff; border-radius: 50%; opacity: 0.5;
+            animation: fall linear infinite; box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10px) translateX(0px); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(100vh) translateX(20px); opacity: 0; }
+        }
+
+        .navbar {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            z-index: 10;
+        }
+
+        .brand { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; }
+        .brand i { color: #ff7300; }
+
+        .btn-exit {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex; align-items: center; gap: 8px;
+            transition: 0.3s;
+        }
+        .btn-exit:hover { background: rgba(239, 68, 68, 0.2); }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            padding: 40px;
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        /* Glassmorphism Panel */
+        .glass-panel {
+            background: rgba(20, 20, 30, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        /* Pomodoro Section */
+        .pomodoro-section {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .strict-toggle {
+            position: absolute; top: 40px; right: 40px;
+            display: flex; align-items: center; gap: 8px; font-weight: 600; color: #ef4444; font-size: 0.95rem;
+            border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 16px; border-radius: 8px; background: rgba(239, 68, 68, 0.1); cursor:pointer;
+            transition: 0.3s;
+        }
+        .strict-toggle.active { background: #ef4444; color: #fff; box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+
+        .timer-modes {
+            display: flex;
+            background: rgba(0,0,0,0.3);
+            border-radius: 99px;
+            padding: 6px;
+            margin-bottom: 40px;
+        }
+        .mode-btn {
+            background: transparent; border: none; color: #94a3b8; padding: 10px 24px;
+            border-radius: 99px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 1rem;
+        }
+        .mode-btn.active {
+            background: #ff7300; color: #fff; box-shadow: 0 4px 15px rgba(255, 115, 0, 0.4);
+        }
+
+        .timer-display {
+            font-family: 'Fira Code', monospace;
+            font-size: 8rem;
+            font-weight: 500;
+            letter-spacing: -2px;
+            text-shadow: 0 0 40px rgba(255,255,255,0.1);
+            margin-bottom: 40px;
+            color: #f8fafc;
+        }
+
+        .timer-controls { display: flex; gap: 20px; }
+        .control-btn {
+            width: 80px; height: 80px; border-radius: 50%; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+            transition: 0.3s;
+        }
+        .btn-play { background: #10b981; color: #fff; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); }
+        .btn-play:hover { transform: scale(1.05); background: #059669; }
+        .btn-reset { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+        .btn-reset:hover { background: rgba(255,255,255,0.2); }
+
+        .focus-stats {
+            margin-top: 32px; color: #cbd5e1; font-weight: 600; background: rgba(255,255,255,0.05); 
+            padding: 10px 24px; border-radius: 99px; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .focus-stats span { color: #ffb84d; font-size: 1.1rem; }
+
+        /* Sidebar: Tasks & Lofi */
+        .sidebar-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Lofi Radio */
+        .lofi-player {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #000;
+            margin-bottom: 16px;
+        }
+
+        .task-board { flex: 1; display:flex; flex-direction:column; min-height: 250px;}
+        .task-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .task-header h3 { margin: 0; font-size: 1.2rem; display:flex; align-items:center; gap:8px; }
+        
+        .task-input-wrapper { display: flex; gap: 10px; margin-bottom: 20px; }
+        .task-input-wrapper input {
+            flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px; padding: 12px 16px; color: #fff; outline: none; font-family:'Inter';
+        }
+        .task-input-wrapper button {
+            background: #ff7300; color: #fff; border: none; width: 45px; border-radius: 8px; cursor:pointer; font-size:1.1rem; transition:0.2s;
+        }
+        .task-input-wrapper button:hover { background: #e66800; }
+
+        .task-list {
+            list-style: none; padding: 0; margin: 0; overflow-y: auto; flex:1; max-height: 250px;
+        }
+        
+        .task-list::-webkit-scrollbar { width: 6px; }
+        .task-list::-webkit-scrollbar-track { background: transparent; }
+        .task-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+        
+        .task-item {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.05);
+            padding: 12px 16px; border-radius: 8px; margin-bottom: 10px;
+            display: flex; align-items: center; gap: 12px; transition: 0.2s;
+        }
+        .task-item:hover { background: rgba(255,255,255,0.08); }
+        .task-item input[type="checkbox"] { width: 18px; height: 18px; cursor:pointer; accent-color: #ff7300; }
+        .task-item span { flex: 1; font-size: 0.95rem; }
+        .task-item.completed span { text-decoration: line-through; color: #64748b; }
+        .delete-task { background: transparent; border: none; color: #64748b; cursor: pointer; transition: 0.2s; font-size:1rem; }
+        .delete-task:hover { color: #ef4444; }
+
+        /* Ambient Sound Pill Buttons */
+        .amb-btn {
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #94a3b8; padding: 8px 0; border-radius: 8px; font-size: 0.85rem;
+            font-weight: 600; cursor: pointer; transition: all 0.25s; font-family: 'Inter', sans-serif;
+        }
+        .amb-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .amb-btn.active { background: rgba(255, 115, 0, 0.15); border-color: #ff7300; color: #ff7300; box-shadow: 0 0 12px rgba(255, 115, 0, 0.2); }
+
+    </style>
+</head>
+<body>
+    <div id="snow-container"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <nav class="navbar">
+        <a href="index.html" class="brand"><i class="fa-solid fa-peace"></i> CodePrep Zen Room</a>
+        <div style="font-family: 'Fira Code', monospace; color: #cbd5e1; font-size: 1.1rem;" id="live-clock">00:00:00 AM</div>
+        <a href="college-study.html" class="btn-exit"><i class="fa-solid fa-arrow-right-from-bracket"></i> Exit Room</a>
+    </nav>
+
+    <div class="main-container">
+        <!-- Pomodoro Timer -->
+        <div class="glass-panel pomodoro-section">
+            <button id="btn-strict" class="strict-toggle" onclick="toggleStrictMode()">
+                <i class="fa-solid fa-lock-open"></i> Strict Mode: OFF
+            </button>
+
+            <div class="timer-modes">
+                <button class="mode-btn active" onclick="setMode('focus', event)">Focus</button>
+                <button class="mode-btn" onclick="setMode('short', event)">Short Break</button>
+                <button class="mode-btn" onclick="setMode('long', event)">Long Break</button>
+            </div>
+            
+            <div class="timer-display" id="time-display">25:00</div>
+            
+            <div class="timer-controls">
+                <button class="control-btn btn-play" id="play-btn" onclick="toggleTimer()">
+                    <i class="fa-solid fa-play"></i>
+                </button>
+                <button class="control-btn btn-reset" onclick="resetTimer()">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
+            </div>
+
+            <div class="focus-stats">
+                🔥 Focus Cycles Today: <span id="cycle-count">0</span> (Total: <span id="total-min">0</span> mins)
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar-section">
+            <!-- Lofi Radio -->
+            <div class="glass-panel" style="padding: 24px;">
+                <div style="margin-bottom: 12px; font-weight: 600; display:flex; gap:8px; align-items:center; color:#e2e8f0; font-size: 1.1rem;">
+                    <i class="fa-solid fa-headphones" style="color:#ffb84d;"></i> Lofi Radio (Click Play)
+                </div>
+                
+                <div class="lofi-player">
+                    <!-- Note: YouTube blocks autoplay unmuted, so users click play -->
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/jfKfPfyJRdk" title="Lofi hip hop mix" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+
+                <!-- Ambient Sound Buttons -->
+                <div style="display: flex; gap: 10px; margin-top: 14px;">
+                    <button class="amb-btn" id="amb-rain" onclick="toggleAmb('rain', this)">
+                        <i class="fa-solid fa-cloud-rain"></i> Rain
+                    </button>
+                    <button class="amb-btn" id="amb-cafe" onclick="toggleAmb('cafe', this)">
+                        <i class="fa-solid fa-mug-hot"></i> Cafe
+                    </button>
+                    <button class="amb-btn" id="amb-forest" onclick="toggleAmb('forest', this)">
+                        <i class="fa-solid fa-tree"></i> Forest
+                    </button>
+                </div>
+
+                <!-- Hidden Audios -->
+                <audio id="aud-rain" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=rain-and-thunder-16705.mp3" preload="none"></audio>
+                <audio id="aud-cafe" loop src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=restaurant-ambience-14-11322.mp3" preload="none"></audio>
+                <audio id="aud-forest" loop src="https://cdn.pixabay.com/download/audio/2021/10/19/audio_bc3ba85785.mp3?filename=birds-outside-the-window-sound-effect-95658.mp3" preload="none"></audio>
+            </div>
+
+            <!-- Motivational Quote Panel -->
+            <div class="glass-panel" style="padding: 20px 24px; text-align: center;">
+                <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 8px; letter-spacing: 0.08em; text-transform: uppercase;">Quote of the Day</div>
+                <p id="daily-quote" style="font-style: italic; color: #e2e8f0; font-size: 0.95rem; line-height: 1.6; margin: 0 0 12px;"></p>
+                <div id="daily-quote-author" style="color: #ff7300; font-size: 0.85rem; font-weight: 600;"></div>
+            </div>
+
+            <!-- Task Board -->
+            <div class="glass-panel task-board" style="padding: 24px;">
+                <div class="task-header">
+                    <h3 style="color:#e2e8f0;"><i class="fa-solid fa-list-check" style="color:#10b981;"></i> Session Tasks</h3>
+                </div>
+                
+                <div class="task-input-wrapper">
+                    <input type="text" id="task-input" placeholder="What are you studying?" onkeypress="handleTaskEnter(event)">
+                    <button onclick="addTask()"><i class="fa-solid fa-plus"></i></button>
+                </div>
+
+                <ul class="task-list" id="task-list">
+                    <!-- Tasks injected by JS -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alarm Audio -->
+    <audio id="alarm-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
+
+    <script>
+        // --- Ambient Snow Effect ---
+        const snowContainer = document.getElementById('snow-container');
+        for (let i = 0; i < 40; i++) {
+            let flake = document.createElement('div');
+            flake.className = 'snowflake';
+            flake.style.left = Math.random() * 100 + 'vw';
+            flake.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            flake.style.animationDelay = Math.random() * 5 + 's';
+            flake.style.width = Math.random() * 3 + 2 + 'px';
+            flake.style.height = flake.style.width;
+            snowContainer.appendChild(flake);
+        }
+
+        // Live Clock
+        setInterval(() => {
+            document.getElementById('live-clock').innerText = new Date().toLocaleTimeString();
+        }, 1000);
+        document.getElementById('live-clock').innerText = new Date().toLocaleTimeString();
+
+        // --- Ambient Sound Pill Toggle ---
+        const ambPlaying = {};
+        function toggleAmb(id, btn) {
+            const audio = document.getElementById('aud-' + id);
+            if (ambPlaying[id]) {
+                audio.pause();
+                btn.classList.remove('active');
+                ambPlaying[id] = false;
+            } else {
+                audio.volume = 0.4;
+                audio.play();
+                btn.classList.add('active');
+                ambPlaying[id] = true;
+            }
+        }
+
+        // --- Quote of the Day ---
+        const quotes = [
+            { text: "The secret of getting ahead is getting started.", author: "— Mark Twain" },
+            { text: "It does not matter how slowly you go as long as you do not stop.", author: "— Confucius" },
+            { text: "Code is like humor. When you have to explain it, it's bad.", author: "— Cory House" },
+            { text: "First, solve the problem. Then, write the code.", author: "— John Johnson" },
+            { text: "Experience is the name everyone gives to their mistakes.", author: "— Oscar Wilde" },
+            { text: "In order to be irreplaceable, one must always be different.", author: "— Coco Chanel" },
+            { text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "— Chinese Proverb" },
+            { text: "Simplicity is the soul of efficiency.", author: "— Austin Freeman" },
+            { text: "Make it work, make it right, make it fast.", author: "— Kent Beck" },
+            { text: "Programs must be written for people to read, and only incidentally for machines to execute.", author: "— Harold Abelson" },
+        ];
+        const todayQ = quotes[new Date().getDay() % quotes.length];
+        document.getElementById('daily-quote').innerText = `"${todayQ.text}"`;
+        document.getElementById('daily-quote-author').innerText = todayQ.author;
+
+        // --- Strict Mode Logic ---
+        let strictMode = false;
+        function toggleStrictMode() {
+            strictMode = !strictMode;
+            const btn = document.getElementById('btn-strict');
+            if (strictMode) {
+                btn.classList.add('active');
+                btn.innerHTML = '<i class="fa-solid fa-lock"></i> Strict Mode: ON';
+            } else {
+                btn.classList.remove('active');
+                btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> Strict Mode: OFF';
+            }
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && strictMode && currentMode === 'focus' && isRunning) {
+                alert("🚨 HEY! Strict Mode is ON! You switched tabs during a Focus Session! Your timer has been paused as a penalty."); // Browser blocks complex tasks on leave, so alert fires upon return or blocks exit.
+                if(isRunning) toggleTimer(); // Pause it
+            }
+        });
+
+        // --- Focus Analytics ---
+        let focusCycles = parseInt(localStorage.getItem('codeprep-cycles')) || 0;
+        let totalMin = focusCycles * 25;
+        document.getElementById('cycle-count').innerText = focusCycles;
+        document.getElementById('total-min').innerText = totalMin;
+
+        function incrementCycle() {
+            focusCycles++;
+            localStorage.setItem('codeprep-cycles', focusCycles);
+            totalMin = focusCycles * 25;
+            document.getElementById('cycle-count').innerText = focusCycles;
+            document.getElementById('total-min').innerText = totalMin;
+        }
+
+        // --- Pomodoro Logic ---
+        const timerModes = { focus: 25 * 60, short: 5 * 60, long: 15 * 60 };
+        let currentMode = 'focus';
+        let timeLeft = timerModes.focus;
+        let isRunning = false;
+        let timerInterval;
+
+        const timeDisplay = document.getElementById('time-display');
+        const playBtn = document.getElementById('play-btn');
+        const alarmSound = document.getElementById('alarm-sound');
+
+        function updateDisplay() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.title = `${timeDisplay.textContent} | Zen Room`;
+        }
+
+        function setMode(mode, event) {
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            if(event) event.target.classList.add('active');
+            
+            currentMode = mode;
+            timeLeft = timerModes[mode];
+            isRunning = false;
+            clearInterval(timerInterval);
+            
+            playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            updateDisplay();
+        }
+
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            } else {
+                timerInterval = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        alarmSound.volume = 0.5;
+                        alarmSound.play();
+                        
+                        // Increment cycle if Focus was completed
+                        if (currentMode === 'focus') {
+                            incrementCycle();
+                            setMode('short', null);
+                            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+                            document.querySelectorAll('.mode-btn')[1].classList.add('active');
+                        } else {
+                            setMode('focus', null);
+                            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+                            document.querySelectorAll('.mode-btn')[0].classList.add('active');
+                        }
+                    }
+                }, 1000);
+                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            }
+            isRunning = !isRunning;
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            timeLeft = timerModes[currentMode];
+            playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            updateDisplay();
+        }
+
+        updateDisplay();
+
+        // --- Task List Logic ---
+        let tasks = JSON.parse(localStorage.getItem('codeprep-tasks')) || [
+            { id: 1, text: "Revise OOP Concepts", completed: false },
+            { id: 2, text: "Solve Two Sum with HashMap", completed: false }
+        ];
+
+        function saveTasks() {
+            localStorage.setItem('codeprep-tasks', JSON.stringify(tasks));
+            renderTasks();
+        }
+
+        function addTask() {
+            const input = document.getElementById('task-input');
+            const val = input.value.trim();
+            if (val) {
+                tasks.push({ id: Date.now(), text: val, completed: false });
+                input.value = '';
+                saveTasks();
+            }
+        }
+
+        function handleTaskEnter(e) { if (e.key === 'Enter') addTask(); }
+        function deleteTask(id) { tasks = tasks.filter(t => t.id !== id); saveTasks(); }
+        window.toggleTask = function(id) {
+            const task = tasks.find(t => t.id === id);
+            if(task) { task.completed = !task.completed; saveTasks(); }
+        }
+
+        function renderTasks() {
+            const list = document.getElementById('task-list');
+            list.innerHTML = '';
+            tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.className = `task-item ${task.completed ? 'completed' : ''}`;
+                li.innerHTML = `
+                    <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})">
+                    <span>${task.text}</span>
+                    <button class="delete-task" onclick="deleteTask(${task.id})"><i class="fa-solid fa-trash"></i></button>
+                `;
+                list.appendChild(li);
+            });
+        }
+        renderTasks();
+
+    </script>
+</body>
+</html>

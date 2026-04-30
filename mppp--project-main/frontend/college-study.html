@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Study Hub | CodePrep</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        .study-header {
+            padding: 120px 40px 40px;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(255, 115, 0, 0.05), transparent);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin: -24px auto 40px;
+            background: rgba(15, 17, 26, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 100px;
+            width: max-content;
+            max-width: 90%;
+            position: sticky;
+            top: 80px;
+            z-index: 50;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.05rem;
+            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), #e66800);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(255, 115, 0, 0.3);
+        }
+
+        /* Main Container */
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto 100px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Content Sections */
+        .tab-section {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .tab-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Grid Cards */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .resource-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: #fff;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top right, rgba(255, 115, 0, 0.1), transparent 50%);
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 115, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .resource-card:hover::before {
+            opacity: 1;
+        }
+
+        .r-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-family: 'Fira Code', monospace;
+            font-weight: 600;
+        }
+
+        .tag-pdf {
+            color: #f87171;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .tag-link {
+            color: #60a5fa;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .tag-book {
+            color: #a78bfa;
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        .r-icon {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #ff7300, #ffb84d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .r-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            z-index: 1;
+        }
+
+        .r-desc {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 24px;
+            flex-grow: 1;
+            z-index: 1;
+        }
+
+        .r-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.2s;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .resource-card:hover .r-btn {
+            background: rgba(255, 115, 0, 0.15);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-system">
+        <div class="grid-overlay"></div>
+        <div class="ambient-orb orb-primary"
+            style="top: -5%; left: 50%; transform: translateX(-50%); width: 700px; height: 700px; opacity: 0.15;"></div>
+    </div>
+
+    <!-- Main Navbar -->
+    <nav class="navbar gsap-nav">
+        <div class="nav-brand">
+            <i class="fa-solid fa-code text-gradient"></i> CodePrep
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dsa-sheet.html">DSA Sheet</a>
+            <a href="features.html" style="color: var(--text-main);">Features</a>
+        </div>
+        <a href="#" class="nav-cta">Get Started</a>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="study-header">
+        <div class="badge-new"
+            style="display: inline-block; padding: 6px 16px; background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 20px; color: #c4b5fd; font-weight: 600; font-size: 0.85rem; margin-bottom: 20px;">
+            <i class="fa-solid fa-graduation-cap"></i> University Resources
+        </div>
+        <h1 class="hero-title" style="font-size: 3.5rem; margin-bottom: 16px;">
+            College <span class="text-gradient">Study Hub</span>
+        </h1>
+        <p class="hero-subtitle" style="margin: 0 auto 24px; max-width: 600px;">
+            Everything you need for your semester exams. Curated lecture notes, previous year question papers, cheat
+            sheets, and standard reference books.
+        </p>
+        <div style="display: flex; gap: 16px; justify-content: center;">
+            <a href="focus-room.html" style="background: rgba(139, 92, 246, 0.15); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.3); padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; text-decoration: none;" onmouseover="this.style.background='rgba(139, 92, 246, 0.25)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.15)'">
+                <i class="fa-solid fa-peace"></i> Enter Focus Room
+            </a>
+            <button onclick="document.getElementById('contributeModal').style.display='flex'" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px;" onmouseover="this.style.background='rgba(16, 185, 129, 0.25)'" onmouseout="this.style.background='rgba(16, 185, 129, 0.15)'">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Donate a Resource
+            </button>
+        </div>
+    </header>
+
+    <!-- Sticky Tab Navigation -->
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('notes')"><i class="fa-regular fa-file-lines"></i> Lecture
+            Notes</button>
+        <button class="tab-btn" onclick="switchTab('pyq')"><i class="fa-solid fa-clock-rotate-left"></i> PYQs</button>
+        <button class="tab-btn" onclick="switchTab('imp')"><i class="fa-solid fa-star"></i> Important Questions</button>
+        <button class="tab-btn" onclick="switchTab('books')"><i class="fa-solid fa-book"></i> Reference Books</button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="content-container">
+
+        <!-- 1. Notes Section -->
+        <section id="notes" class="tab-section active">
+            <h2 class="section-title"><i class="fa-regular fa-file-pdf" style="color: #fbbf24;"></i> Hand-Written
+                Lecture Notes</h2>
+            <div class="resource-grid">
+                <a href="resources/OS_Notes.pdf" download="OS_Handwritten_Notes.pdf" class="resource-card">
+                    <span class="r-tag tag-pdf">PDF</span>
+                    <i class="fa-brands fa-linux r-icon"></i>
+                    <h3 class="r-title">Operating Systems</h3>
+                    <p class="r-desc">Complete handwritten notes covering Processes, Threads, Memory Management (Paging,
+                        Segmentation), and Deadlocks.</p>
+                    <div class="r-btn"><i class="fa-solid fa-download"></i> Download Notes</div>
+                </a>
+
+                <a href="resources/DBMS_Notes.pdf" download="DBMS_Handwritten_Notes.pdf" class="resource-card">
+                    <span class="r-tag tag-pdf">PDF</span>
+                    <i class="fa-solid fa-database r-icon"></i>
+                    <h3 class="r-title">Database Management (DBMS)</h3>
+                    <p class="r-desc">Relational Algebra, SQL, Normalization (1NF to BCNF), Transaction Concurrency
+                        Control, and Indexing (B+ Trees).</p>
+                    <div class="r-btn"><i class="fa-solid fa-download"></i> Download Notes</div>
+                </a>
+
+                <a href="resources/CN_Notes.pdf" download="CN_Handwritten_Notes.pdf" class="resource-card">
+                    <span class="r-tag tag-pdf">PDF</span>
+                    <i class="fa-solid fa-network-wired r-icon"></i>
+                    <h3 class="r-title">Computer Networks</h3>
+                    <p class="r-desc">In-depth overview of the OSI Model, TCP/IP stack, Subnetting, Routing Algorithms,
+                        and Application Layer protocols.</p>
+                    <div class="r-btn"><i class="fa-solid fa-download"></i> Download Notes</div>
+                </a>
+
+                <a href="resources/COA_Notes.pdf" download="COA_Handwritten_Notes.pdf" class="resource-card">
+                    <span class="r-tag tag-pdf">PDF</span>
+                    <i class="fa-solid fa-microchip r-icon"></i>
+                    <h3 class="r-title">Computer Arch. & Org. (COA)</h3>
+                    <p class="r-desc">Pipelining, Cache Mapping techniques, ALU design, instruction formats, and memory
+                        hierarchy architecture.</p>
+                    <div class="r-btn"><i class="fa-solid fa-download"></i> Download Notes</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 2. PYQs Section -->
+        <section id="pyq" class="tab-section">
+            <h2 class="section-title"><i class="fa-solid fa-clock-rotate-left" style="color: #fbbf24;"></i> Previous
+                Year Question Papers</h2>
+            <div class="resource-grid">
+                <a href="https://drive.google.com" target="_blank" class="resource-card">
+                    <span class="r-tag tag-link">DRIVE LINK</span>
+                    <i class="fa-solid fa-folder-open r-icon" style="color: #60a5fa;"></i>
+                    <h3 class="r-title">OS - Last 5 Years Papers</h3>
+                    <p class="r-desc">A compiled folder of mid-sem and end-sem Operating System question papers exactly
+                        tracing syllabus patterns.</p>
+                    <div class="r-btn"><i class="fa-brands fa-google-drive"></i> View Folder</div>
+                </a>
+
+                <a href="https://drive.google.com" target="_blank" class="resource-card">
+                    <span class="r-tag tag-link">DRIVE LINK</span>
+                    <i class="fa-solid fa-folder-open r-icon" style="color: #60a5fa;"></i>
+                    <h3 class="r-title">DBMS - Last 5 Years Papers</h3>
+                    <p class="r-desc">Database systems theory and practical SQL schema queries frequently asked in final
+                        university examinations.</p>
+                    <div class="r-btn"><i class="fa-brands fa-google-drive"></i> View Folder</div>
+                </a>
+
+                <a href="https://drive.google.com" target="_blank" class="resource-card">
+                    <span class="r-tag tag-link">DRIVE LINK</span>
+                    <i class="fa-solid fa-folder-open r-icon" style="color: #60a5fa;"></i>
+                    <h3 class="r-title">Theory of Computation</h3>
+                    <p class="r-desc">Tough Automata theory proofs, Turing Machine designs, and Context Free Grammar
+                        compilation questions.</p>
+                    <div class="r-btn"><i class="fa-brands fa-google-drive"></i> View Folder</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 3. Important Questions -->
+        <section id="imp" class="tab-section">
+            <h2 class="section-title"><i class="fa-solid fa-star" style="color: #fbbf24;"></i> Faculty marked Important
+                Questions</h2>
+
+            <!-- A list style view instead of cards for variety -->
+            <div
+                style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; overflow: hidden;">
+                <!-- Row 1 -->
+                <div style="padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; transition: 0.3s; cursor: pointer;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.02)'"
+                    onmouseout="this.style.background='transparent'">
+                    <div>
+                        <h4 style="font-size: 1.1rem; margin: 0 0 6px 0; color: #fff;">Top 50 Operating System VIP
+                            Questions <span
+                                style="background: #ef4444; color: #fff; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: middle;">HOT</span>
+                        </h4>
+                        <p style="margin: 0; color: #94a3b8; font-size: 0.9rem;">Guaranteed to appear: Banker's
+                            Algorithm, Belady's Anomaly, Semaphore logic.</p>
+                    </div>
+                    <button
+                        style="background: rgba(255,115,0,0.1); color: var(--primary); border: 1px solid rgba(255,115,0,0.3); padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s;"
+                        onmouseover="this.style.background='rgba(255,115,0,0.2)'" onmouseout="this.style.background='rgba(255,115,0,0.1)'"
+                        onclick="openVipSheet('os')"><i class="fa-solid fa-list-check"></i> View Sheet</button>
+                </div>
+
+                <!-- Row 2 -->
+                <div style="padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; transition: 0.3s; cursor: pointer;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.02)'"
+                    onmouseout="this.style.background='transparent'">
+                    <div>
+                        <h4 style="font-size: 1.1rem; margin: 0 0 6px 0; color: #fff;">Top 40 Database Design VIP
+                            Questions</h4>
+                        <p style="margin: 0; color: #94a3b8; font-size: 0.9rem;">Strict theoretical proofs on BCNF
+                            constraints and ACID property violations.</p>
+                    </div>
+                    <button
+                        style="background: rgba(255,115,0,0.1); color: var(--primary); border: 1px solid rgba(255,115,0,0.3); padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s;"
+                        onmouseover="this.style.background='rgba(255,115,0,0.2)'" onmouseout="this.style.background='rgba(255,115,0,0.1)'"
+                        onclick="openVipSheet('dbms')"><i class="fa-solid fa-list-check"></i> View Sheet</button>
+                </div>
+
+                <!-- Row 3 -->
+                <div style="padding: 24px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; cursor: pointer;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.02)'"
+                    onmouseout="this.style.background='transparent'">
+                    <div>
+                        <h4 style="font-size: 1.1rem; margin: 0 0 6px 0; color: #fff;">Top 30 Engineering Mathematics IV
+                            Questions</h4>
+                        <p style="margin: 0; color: #94a3b8; font-size: 0.9rem;">Probability distributions, Markov
+                            chains, Set Theory, and Graph algorithms.</p>
+                    </div>
+                    <button
+                        style="background: rgba(255,115,0,0.1); color: var(--primary); border: 1px solid rgba(255,115,0,0.3); padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s;"
+                        onmouseover="this.style.background='rgba(255,115,0,0.2)'" onmouseout="this.style.background='rgba(255,115,0,0.1)'"
+                        onclick="openVipSheet('math')"><i class="fa-solid fa-list-check"></i> View Sheet</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Books Section -->
+        <section id="books" class="tab-section">
+            <h2 class="section-title"><i class="fa-solid fa-book-open" style="color: #fbbf24;"></i> Standard Reference
+                Books</h2>
+            <div class="resource-grid">
+                <a href="https://openlibrary.org/search?q=operating+system+concepts+galvin" target="_blank" class="resource-card">
+                    <span class="r-tag tag-book">E-BOOK</span>
+                    <i class="fa-solid fa-book-atlas r-icon"
+                        style="background: linear-gradient(135deg, #a78bfa, #c4b5fd); -webkit-background-clip: text;"></i>
+                    <h3 class="r-title">OS Concepts by Galvin</h3>
+                    <p class="r-desc">The "Dinosaur book". The absolute standard textbook referenced by every university
+                        for Operating Systems.</p>
+                    <div class="r-btn" style="border-color: rgba(167, 139, 250, 0.3); color: #c4b5fd;"><i
+                            class="fa-solid fa-book-open-reader"></i> Read E-Book</div>
+                </a>
+
+                <a href="https://openlibrary.org/search?q=database+system+concepts+korth" target="_blank" class="resource-card">
+                    <span class="r-tag tag-book">E-BOOK</span>
+                    <i class="fa-solid fa-book-journal-whills r-icon"
+                        style="background: linear-gradient(135deg, #a78bfa, #c4b5fd); -webkit-background-clip: text;"></i>
+                    <h3 class="r-title">Database Concepts by Korth</h3>
+                    <p class="r-desc">The holy grail of DBMS. Explains everything from simple SQL commands to complex
+                        theoretical normalizations.</p>
+                    <div class="r-btn" style="border-color: rgba(167, 139, 250, 0.3); color: #c4b5fd;"><i
+                            class="fa-solid fa-book-open-reader"></i> Read E-Book</div>
+                </a>
+
+                <a href="https://openlibrary.org/search?q=computer+networking+kurose" target="_blank" class="resource-card">
+                    <span class="r-tag tag-book">E-BOOK</span>
+                    <i class="fa-solid fa-book-bookmark r-icon"
+                        style="background: linear-gradient(135deg, #a78bfa, #c4b5fd); -webkit-background-clip: text;"></i>
+                    <h3 class="r-title">Networks by Kurose & Ross</h3>
+                    <p class="r-desc">A Top-Down Approach to Computer Networking natively aligning with standard modern
+                        CS degrees.</p>
+                    <div class="r-btn" style="border-color: rgba(167, 139, 250, 0.3); color: #c4b5fd;"><i
+                            class="fa-solid fa-book-open-reader"></i> Read E-Book</div>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Contribution Modal -->
+    <div id="contributeModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:1000; align-items:center; justify-content:center;">
+        <div style="background:rgba(15,17,26,0.95); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:30px; max-width:500px; width:90%; position:relative;">
+            <button onclick="document.getElementById('contributeModal').style.display='none'" style="position:absolute; top:20px; right:20px; background:none; border:none; color:#94a3b8; font-size:1.5rem; cursor:pointer;">&times;</button>
+            <h2 style="font-size:1.5rem; margin-bottom:10px;"><i class="fa-solid fa-hand-holding-heart" style="color:#10b981;"></i> Contribute Resource</h2>
+            <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:24px;">Community grows by sharing! Upload a PDF note, link a cheat sheet, or request a missing PYQ and we'll add it to the hub after review.</p>
+            
+            <form onsubmit="handleContribute(event)" style="display:flex; flex-direction:column; gap:16px;">
+                <div>
+                    <label style="display:block; margin-bottom:6px; color:#cbd5e1; font-weight:500;">Resource Title</label>
+                    <input id="resTitle" type="text" required placeholder="E.g. Full DBMS Handwritten Notes" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.5); color:#fff; font-family: inherit;">
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:6px; color:#cbd5e1; font-weight:500;">Type / Subject</label>
+                    <select id="resType" required style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.5); color:#fff; font-family: inherit;">
+                        <option value="" style="color:#000;">Select category...</option>
+                        <option value="notes" style="color:#000;">Notes (PDF)</option>
+                        <option value="pyq" style="color:#000;">Question Paper (Link/PDF)</option>
+                        <option value="other" style="color:#000;">Study Guide / Book (Link)</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:6px; color:#cbd5e1; font-weight:500;">Upload File or Drive Link</label>
+                    <input id="resLink" type="text" required placeholder="https://drive.google.com/..." style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.5); color:#fff; font-family: inherit;">
+                </div>
+                <button type="submit" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; padding:14px; border-radius:8px; font-weight:600; font-size:1rem; cursor:pointer; margin-top:8px; transition: 0.2s;">Submit Resource</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- VIP Questions Detailed Modal -->
+    <div id="vipModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:1000; align-items:center; justify-content:center;">
+        <div style="background:rgba(15,17,26,0.95); border:1px solid rgba(255,115,0,0.2); border-radius:16px; padding:30px; max-width:650px; width:90%; position:relative; box-shadow: 0 0 30px rgba(255,115,0,0.1);">
+            <button onclick="document.getElementById('vipModal').style.display='none'" style="position:absolute; top:20px; right:20px; background:none; border:none; color:#94a3b8; font-size:1.5rem; cursor:pointer;">&times;</button>
+            <h2 id="vipTitle" style="font-size:1.5rem; margin-bottom:5px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-fire text-gradient"></i> VIP Questions Sheet</h2>
+            <p id="vipDesc" style="color:#94a3b8; font-size:0.9rem; margin-bottom:24px; padding-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.05);"></p>
+            
+            <div id="vipList" style="max-height:60vh; overflow-y:auto; padding-right:10px; display:flex; flex-direction:column; gap:12px;">
+                <!-- Populated dynamically -->
+            </div>
+            <div style="margin-top:20px; text-align:right;">
+                <button onclick="document.getElementById('vipModal').style.display='none'" style="background:linear-gradient(135deg, #ff7300, #e66800); color:#000; border:none; padding:10px 24px; border-radius:8px; font-weight:600; cursor:pointer;">Close Sheet</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate 50 OS Questions
+        const osBase = [
+            "Elaborate on the Banker's Algorithm with a detailed step-by-step example of calculating the Safe State sequence.",
+            "Discuss the difference between Preemptive and Non-Preemptive scheduling. Provide examples.",
+            "What is Belady's Anomaly? Prove how increasing page frames can increase page faults in FIFO replacement.",
+            "Explain the concept of Thrashing, its causes, and how the Working Set Model prevents it.",
+            "Detailed explanation of Semaphores vs Mutex. Provide pseudo-code solving the Producer-Consumer problem.",
+            "Compare and contrast Paging and Segmentation. Explain the role of TLB in memory translation.",
+            "Explain the necessary conditions for Deadlock occurrence and how recovery is managed.",
+            "What is a Zombie Process vs Orphan Process? How are they handled by the kernel?",
+            "Explain Shortest Job First (SJF) scheduling and its optimal nature for minimizing waiting time.",
+            "Detail the architecture of the Virtual File System (VFS) and inode structures."
+        ];
+        const osList = [...osBase];
+        for(let i=11; i<=50; i++) {
+            const topics = ['Context Switching', 'Page Fault Handling', 'Disk Scheduling (SCAN/C-SCAN)', 'Inter-Process Communication (IPC)', 'Priority Inversion'];
+            osList.push(`Advanced Concept ${i}: Evaluate the performance constraints and security mechanics of ${topics[i%topics.length]} in modern distributed kernels.`);
+        }
+
+        // Generate 40 DBMS Questions
+        const dbmsBase = [
+            "Prove that every relation in BCNF is inherently in 3NF, but the converse is not always true.",
+            "Explain ACID properties with a concrete transaction log rollback example and shadow paging.",
+            "Critically differentiate between conflict serializability and view serializability using graphs.",
+            "Explain the B+ Tree insertion algorithm. How does splitting propagate upwards during indexing?",
+            "Write advanced nested SQL queries utilizing analytic functions (RANK, DENSE_RANK).",
+            "Discuss the Two-Phase Locking (2PL) protocol and its vulnerability to deadlocks.",
+            "Explain the ARIES recovery algorithm focusing on Analysis, Redo, and Undo phases.",
+            "What is Multi-Version Concurrency Control (MVCC) and how does PostgreSQL implement it?",
+            "Define Lossless-Join Decomposition versus Dependency-Preserving Decomposition.",
+            "Explain Hash indexing. When is linear hashing preferred over extendible hashing?"
+        ];
+        const dbmsList = [...dbmsBase];
+        for(let i=11; i<=40; i++) {
+            const dTopics = ['Query Optimization Trees', 'Trigger Functions', 'NoSQL Graph Databases', 'CAP Theorem', 'Clustered vs Non-Clustered Indexes'];
+            dbmsList.push(`Database Design Case ${i}: Design a schema and write the execution plan for scaling ${dTopics[i%dTopics.length]} in a high-throughput environment.`);
+        }
+
+        // Generate 30 Math Questions
+        const mathBase = [
+            "State and prove Bayes' Theorem. Provide a real-world probabilistic inference problem.",
+            "Find the steady state probability vector for a given Markov Chain regular transition matrix.",
+            "Discuss the core properties of a Poisson distribution and derive its Moment Generating Function.",
+            "Explain Dijkstra's shortest path algorithm. Prove why it fails with negative edge weights.",
+            "Formulate necessary and sufficient conditions for Eulerian circuits and Hamiltonian cycles.",
+            "Use the Central Limit Theorem to approximate probabilities for a binomial distribution.",
+            "Solve the traveling salesman problem (TSP) for a fully connected weighted graph of 5 nodes.",
+            "Derive the expected value and variance for a continuous uniform distribution.",
+            "Explain Graph Isomorphism with examples of invariant properties.",
+            "Define a bipartite graph and state Hall's Marriage Theorem with an example."
+        ];
+        const mathList = [...mathBase];
+        for(let i=11; i<=30; i++) {
+            const mTopics = ['Graph Coloring / Chromatic Numbers', 'Eigenvalues and Matrix Diagonalization', 'Multiple Random Variables', 'Stochastic Processes', 'Trees and Minimum Spanning Trees (Kruskal/Prim)'];
+            mathList.push(`Applied Mathematics ${i}: Prove the boundary conditions and combinatorial limits governing ${mTopics[i%mTopics.length]}.`);
+        }
+
+        // Data containing real questions
+        const vipData = {
+            os: {
+                title: "Top 50 Operating System VIP Questions",
+                desc: "High priority conceptual questions covering synchronization, deadlock, and memory mapping.",
+                list: osList
+            },
+            dbms: {
+                title: "Top 40 Database Design VIP Questions",
+                desc: "Strict theoretical proofs on normalization constraints and database ACID concurrency protocols.",
+                list: dbmsList
+            },
+            math: {
+                title: "Top 30 Engineering Mathematics IV",
+                desc: "Probability distributions, discrete Markov models, Set Theory, and dynamic Graph algorithms.",
+                list: mathList
+            }
+        };
+
+        function openVipSheet(type) {
+            const data = vipData[type];
+            document.getElementById("vipTitle").innerHTML = `<i class="fa-solid fa-fire text-gradient"></i> ${data.title}`;
+            document.getElementById("vipDesc").innerText = data.desc;
+            
+            const listDiv = document.getElementById("vipList");
+            listDiv.innerHTML = "";
+            
+            data.list.forEach((q, index) => {
+                const qBox = document.createElement("div");
+                qBox.style.cssText = "background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:16px; border-radius:10px; color:#cbd5e1; font-size:0.95rem; line-height:1.5; display:flex; gap:12px;";
+                qBox.innerHTML = `
+                    <div style="color:var(--primary); font-weight:700;">${index+1}.</div>
+                    <div>${q}</div>
+                `;
+                listDiv.appendChild(qBox);
+            });
+            
+            document.getElementById("vipModal").style.display = "flex";
+        }
+
+        function switchTab(tabId) {
+            // Hide all sections
+            document.querySelectorAll('.tab-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected explicitly
+            document.getElementById(tabId).classList.add('active');
+
+            // Highlight button natively relying on event target context
+            const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(el => el.getAttribute('onclick').includes(tabId));
+            if (activeBtn) activeBtn.classList.add('active');
+
+            window.scrollTo({ top: document.querySelector('.study-header').offsetHeight, behavior: 'smooth' });
+        }
+
+        function handleContribute(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading...';
+            btn.style.opacity = '0.7';
+
+            const title = document.getElementById('resTitle').value;
+            const type = document.getElementById('resType').value;
+            const link = document.getElementById('resLink').value;
+
+            setTimeout(() => {
+                document.getElementById('contributeModal').style.display='none';
+                
+                // Construct the dynamic card
+                const card = document.createElement('a');
+                card.href = link;
+                card.target = '_blank';
+                card.className = 'resource-card';
+                card.style.animation = 'fadeIn 0.5s ease-out';
+                card.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+                card.style.boxShadow = '0 0 15px rgba(16, 185, 129, 0.1)';
+                
+                if (type === 'notes') {
+                    card.innerHTML = `
+                        <span class="r-tag tag-pdf" style="background:rgba(16,185,129,0.1); color:#10b981; border-color:rgba(16,185,129,0.2);">NEW PDF</span>
+                        <i class="fa-solid fa-file-pdf r-icon" style="background: linear-gradient(135deg, #10b981, #34d399); -webkit-background-clip: text;"></i>
+                        <h3 class="r-title">${title}</h3>
+                        <p class="r-desc">Community contributed handwritten notes. Ready to download.</p>
+                        <div class="r-btn" style="border-color: rgba(16, 185, 129, 0.3); color: #10b981;"><i class="fa-solid fa-download"></i> Download Notes</div>
+                    `;
+                    document.querySelector('#notes .resource-grid').prepend(card);
+                    switchTab('notes');
+                } else if (type === 'pyq') {
+                    card.innerHTML = `
+                        <span class="r-tag tag-link" style="background:rgba(16,185,129,0.1); color:#10b981; border-color:rgba(16,185,129,0.2);">NEW LINK</span>
+                        <i class="fa-solid fa-folder-open r-icon" style="background: linear-gradient(135deg, #10b981, #34d399); -webkit-background-clip: text;"></i>
+                        <h3 class="r-title">${title}</h3>
+                        <p class="r-desc">Community contributed question paper directory.</p>
+                        <div class="r-btn" style="border-color: rgba(16, 185, 129, 0.3); color: #10b981;"><i class="fa-brands fa-google-drive"></i> View Folder</div>
+                    `;
+                    document.querySelector('#pyq .resource-grid').prepend(card);
+                    switchTab('pyq');
+                } else {
+                    card.innerHTML = `
+                        <span class="r-tag tag-book" style="background:rgba(16,185,129,0.1); color:#10b981; border-color:rgba(16,185,129,0.2);">NEW BOOK</span>
+                        <i class="fa-solid fa-book-bookmark r-icon" style="background: linear-gradient(135deg, #10b981, #34d399); -webkit-background-clip: text;"></i>
+                        <h3 class="r-title">${title}</h3>
+                        <p class="r-desc">Community contributed reference material.</p>
+                        <div class="r-btn" style="border-color: rgba(16, 185, 129, 0.3); color: #10b981;"><i class="fa-solid fa-book-open-reader"></i> View Book</div>
+                    `;
+                    document.querySelector('#books .resource-grid').prepend(card);
+                    switchTab('books');
+                }
+                
+                // Show immediate feedback toast instead of blocking alert
+                const successMsg = document.createElement('div');
+                successMsg.style.cssText = 'position:fixed; bottom:20px; right:20px; background:rgba(16,185,129,0.95); color:#fff; padding:15px 25px; border-radius:8px; font-weight:600; z-index:9999; box-shadow:0 10px 30px rgba(0,0,0,0.5); animation:fadeIn 0.3s ease-out;';
+                successMsg.innerHTML = '<i class="fa-solid fa-circle-check"></i> Resource added successfully!';
+                document.body.appendChild(successMsg);
+                setTimeout(() => successMsg.style.display='none', 4000);
+
+                e.target.reset();
+                btn.innerHTML = 'Submit Resource';
+                btn.style.opacity = '1';
+            }, 1200);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Design | CodePrep</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            overflow-y: auto;
+        }
+
+        .page-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 100px 20px 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .sd-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        @media(max-width:600px) {
+            .sd-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sd-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 18px;
+            padding: 28px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .sd-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(251, 191, 36, 0.3);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .sd-card.expanded {
+            border-color: rgba(251, 191, 36, 0.4);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .level-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .level-hld {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+        }
+
+        .level-lld {
+            background: rgba(167, 139, 250, 0.1);
+            color: #a78bfa;
+        }
+
+        .card-desc {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            display: none;
+            background: #0f111a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+            color: #cbd5e1;
+            line-height: 1.8;
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .sd-card.expanded .card-content {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .tag {
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            color: #64748b;
+        }
+
+        .expand-icon {
+            color: #64748b;
+            transition: 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .sd-card.expanded .expand-icon {
+            transform: rotate(45deg);
+            color: #fbbf24;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .filter-btn {
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: #94a3b8;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .filter-btn.active {
+            background: rgba(251, 191, 36, 0.12);
+            border-color: rgba(251, 191, 36, 0.3);
+            color: #fbbf24;
+        }
+
+        .mark-btn {
+            margin-top: 16px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #fbbf24, #f97316);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .mark-btn.done-state {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-system">
+        <div class="grid-overlay"></div>
+    </div>
+    <nav class="navbar">
+        <div class="nav-brand"><i class="fa-solid fa-code text-gradient"></i> CodePrep</div>
+        <div class="nav-links"><a href="interview-prep.html">← Interview Prep</a></div>
+    </nav>
+    <div class="page-wrap">
+        <div style="text-align:center;margin-bottom:40px;">
+            <div
+                style="display:inline-block;padding:6px 16px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:20px;color:#fbbf24;font-weight:600;font-size:0.85rem;margin-bottom:16px;">
+                <i class="fa-solid fa-sitemap"></i> System Design</div>
+            <h1 class="hero-title" style="font-size:3rem;margin-bottom:12px;">Design <span
+                    class="text-gradient">Scalable Systems</span></h1>
+            <p class="hero-subtitle" style="max-width:560px;margin:0 auto;">HLD & LLD problems with architecture
+                breakdowns, loaded from MySQL.</p>
+            <div style="margin-top:20px;display:flex;align-items:center;gap:12px;justify-content:center;">
+                <input type="text" id="username-field" placeholder="Your name (for progress)..."
+                    style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 14px;color:#fff;font-family:'Inter',sans-serif;">
+                <button onclick="loadProgress()"
+                    style="background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.3);padding:8px 16px;border-radius:8px;font-weight:600;cursor:pointer;">Load
+                    Progress</button>
+            </div>
+        </div>
+        <div class="filter-row">
+            <button class="filter-btn active" onclick="filterCards('all',this)">All Systems</button>
+            <button class="filter-btn" onclick="filterCards('HLD',this)">HLD Problems</button>
+            <button class="filter-btn" onclick="filterCards('LLD',this)">LLD Problems</button>
+        </div>
+        <div class="sd-grid" id="cards-grid">
+            <div style="grid-column:1/-1;padding:40px;text-align:center;color:#64748b;"><i
+                    class="fa-solid fa-spinner fa-spin fa-2x"></i></div>
+        </div>
+    </div>
+    <script>
+        const API = 'http://localhost:8080/api/study';
+        let topics = [], completedIds = new Set(), activeFilter = 'all';
+        let username = localStorage.getItem('codeprep_username') || '';
+        if (username) document.getElementById('username-field').value = username;
+
+        async function init() {
+            try {
+                const res = await fetch(`${API}/topics?module=system-design`);
+                topics = await res.json();
+                if (username) await loadProgress();
+                renderCards();
+            } catch (e) {
+                document.getElementById('cards-grid').innerHTML = `<div style="grid-column:1/-1;padding:40px;text-align:center;color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Backend offline.</div>`;
+            }
+        }
+
+        function renderCards() {
+            const filtered = activeFilter === 'all' ? topics : topics.filter(t => t.subject === activeFilter);
+            if (!filtered.length) { document.getElementById('cards-grid').innerHTML = `<div style="grid-column:1/-1;padding:40px;text-align:center;color:#64748b;">No topics found.</div>`; return; }
+            document.getElementById('cards-grid').innerHTML = filtered.map(t => {
+                const tags = (t.tags || '').split(',').filter(Boolean);
+                const isDone = completedIds.has(t.id);
+                return `<div class="sd-card" id="card-${t.id}" onclick="toggleCard(${t.id})">
+                    <div class="card-top">
+                        <div>
+                            <div class="card-title">${t.title} ${isDone ? '<i class="fa-solid fa-check-circle" style="color:#10b981;font-size:0.9rem;"></i>' : ''}</div>
+                            <div class="card-desc">Click to expand full system design breakdown.</div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+                            <span class="level-badge level-${t.subject.toLowerCase()}">${t.subject}</span>
+                            <i class="fa-solid fa-plus expand-icon"></i>
+                        </div>
+                    </div>
+                    <div class="tags">${tags.map(tag => `<span class="tag">${tag.trim()}</span>`).join('')}</div>
+                    <div class="card-content">${t.content}${t.codeExample ? `\n\n<pre style="background:#1a1d2d;padding:16px;border-radius:8px;overflow:auto;">${escHtml(t.codeExample)}</pre>` : ''}
+                        <button class="mark-btn ${isDone ? 'done-state' : ''}" onclick="event.stopPropagation();markDone(${t.id})" id="mb-${t.id}">${isDone ? '<i class="fa-solid fa-check-circle"></i> Done' : '<i class="fa-solid fa-circle-check"></i> Mark as Done'}</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function toggleCard(id) {
+            const card = document.getElementById(`card-${id}`);
+            document.querySelectorAll('.sd-card.expanded').forEach(c => { if (c.id !== `card-${id}`) c.classList.remove('expanded'); });
+            card.classList.toggle('expanded');
+        }
+
+        function filterCards(val, btn) {
+            activeFilter = val;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderCards();
+        }
+
+        async function markDone(id) {
+            const name = document.getElementById('username-field').value.trim() || 'Anonymous';
+            username = name; localStorage.setItem('codeprep_username', name);
+            try {
+                await fetch(`${API}/progress/complete`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, topicId: id }) });
+                completedIds.add(id);
+                renderCards();
+            } catch (e) { }
+        }
+
+        async function loadProgress() {
+            const name = document.getElementById('username-field').value.trim(); if (!name) return;
+            username = name; localStorage.setItem('codeprep_username', name);
+            try {
+                const res = await fetch(`${API}/progress?username=${encodeURIComponent(name)}`);
+                const data = await res.json();
+                completedIds = new Set(data.completedTopicIds);
+                renderCards();
+            } catch (e) { }
+        }
+
+        function escHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+        init();
+    </script>
+</body>
+
+</html>
