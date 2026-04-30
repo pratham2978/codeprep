@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Preparation | CodePrep</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        .prep-header {
+            background: linear-gradient(135deg, rgba(255, 115, 0, 0.08), rgba(0, 0, 0, 0));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 140px 40px 60px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .prep-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 40px auto 100px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .prep-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 32px;
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: #fff;
+            backdrop-filter: blur(10px);
+        }
+
+        .prep-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 115, 0, 0.2);
+        }
+
+        .prep-card-icon {
+            background: rgba(255, 115, 0, 0.1);
+            color: var(--primary);
+            width: 65px;
+            height: 65px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 115, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        .prep-card:hover .prep-card-icon {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 5px 15px rgba(255, 115, 0, 0.4);
+        }
+
+        .prep-card-info {
+            flex: 1;
+        }
+
+        .prep-card-info h3 {
+            font-size: 1.35rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .prep-card-info p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.55;
+            margin-bottom: 20px;
+        }
+
+        .prep-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: #64748b;
+            font-family: 'Fira Code', monospace;
+            flex-wrap: wrap;
+        }
+
+        .meta-tag {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-system">
+        <div class="grid-overlay"></div>
+        <div class="ambient-orb orb-primary"
+            style="top: -10%; left: 50%; transform: translateX(-50%); width: 800px; height: 800px; opacity: 0.15;">
+        </div>
+    </div>
+
+    <!-- Main Navbar -->
+    <nav class="navbar gsap-nav">
+        <div class="nav-brand">
+            <i class="fa-solid fa-code text-gradient"></i> CodePrep
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dsa-sheet.html">DSA Sheet</a>
+            <a href="features.html" style="color: var(--text-main);">Features</a>
+        </div>
+        <a href="#" class="nav-cta">Get Started</a>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="prep-header">
+        <div class="badge-new"
+            style="display: inline-block; padding: 6px 16px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); border-radius: 20px; color: #4ade80; font-weight: 600; font-size: 0.85rem; margin-bottom: 24px;">
+            <i class="fa-solid fa-bolt" style="margin-right: 4px;"></i> Placement Ready
+        </div>
+        <h1 class="hero-title" style="font-size: 3.5rem; margin-bottom: 20px;">
+            The Ultimate <span class="text-gradient">Interview Prep</span>
+        </h1>
+        <p class="hero-subtitle" style="margin: 0 auto; line-height: 1.6; max-width: 650px; font-size: 1.1rem;">
+            Everything you need to confidently clear technical rounds, design robust architectures, and ace behavioral
+            interviews at top tech companies.
+        </p>
+    </header>
+
+    <!-- Content Grid -->
+    <div class="prep-grid">
+        <!-- Card 1 -->
+        <a href="core-cs.html" class="prep-card">
+            <div class="prep-card-icon"><i class="fa-solid fa-database"></i></div>
+            <div class="prep-card-info">
+                <h3>Core CS Subjects</h3>
+                <p>Master Operating Systems, DBMS, and Computer Networks. Dive deep into paging, normalization, and OSI
+                    layers.</p>
+                <div class="prep-meta">
+                    <span class="meta-tag">OS</span>
+                    <span class="meta-tag">DBMS</span>
+                    <span class="meta-tag">CN</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Card 2 -->
+        <a href="system-design.html" class="prep-card">
+            <div class="prep-card-icon"><i class="fa-solid fa-sitemap"></i></div>
+            <div class="prep-card-info">
+                <h3>System Design (HLD/LLD)</h3>
+                <p>Architect scalable systems. Learn Load Balancing, Caching, Microservices, and complex database
+                    sharding techniques.</p>
+                <div class="prep-meta">
+                    <span class="meta-tag">High Level</span>
+                    <span class="meta-tag">Low Level</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Card 3 -->
+        <a href="oops.html" class="prep-card">
+            <div class="prep-card-icon"><i class="fa-solid fa-cubes"></i></div>
+            <div class="prep-card-info">
+                <h3>Object Oriented Prog.</h3>
+                <p>Understand the 4 pillars of OOPs. Practice real-world design patterns in Java and C++ directly for
+                    your technical rounds.</p>
+                <div class="prep-meta">
+                    <span class="meta-tag">Java/C++</span>
+                    <span class="meta-tag">Design Patterns</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Card 4 -->
+        <a href="hr-behavioral.html" class="prep-card">
+            <div class="prep-card-icon"><i class="fa-solid fa-handshake-angle"></i></div>
+            <div class="prep-card-info">
+                <h3>HR & Behavioral</h3>
+                <p>Master the STAR method. Prepare for common behavioral trick questions and learn powerful salary
+                    negotiation strategies.</p>
+                <div class="prep-meta">
+                    <span class="meta-tag">STAR Method</span>
+                    <span class="meta-tag">Non-Tech</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Card 5 -->
+        <a href="resume-builder.html" class="prep-card">
+            <div class="prep-card-icon"><i class="fa-solid fa-file-invoice"></i></div>
+            <div class="prep-card-info">
+                <h3>Resume Building</h3>
+                <p>Create flawless, ATS-friendly resumes. Get action verb cheat sheets and highly professional layout
+                    templates.</p>
+                <div class="prep-meta">
+                    <span class="meta-tag">ATS Approved</span>
+                    <span class="meta-tag">LaTeX</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Card 6 -->
+        <a href="mock-interview.html" class="prep-card">
+            <div class="prep-card-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
+            <div class="prep-card-info">
+                <h3>Mock Interviews</h3>
+                <p>Schedule peer-to-peer technical mock interviews. Practice live coding and system design with fellow
+                    peers via video.</p>
+                <div class="prep-meta">
+                    <span class="meta-tag">Live Practice</span>
+                    <span class="meta-tag">P2P Matching</span>
+                </div>
+            </div>
+        </a>
+    </div>
+
+</body>
+
+</html>

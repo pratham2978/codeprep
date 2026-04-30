@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core CS Subjects | CodePrep</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            overflow-y: auto;
+        }
+
+        .page-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .page-hero {
+            text-align: center;
+            padding-bottom: 50px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 20px;
+            color: #60a5fa;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        /* Layout: Sidebar + Content */
+        .study-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        @media(max-width:850px) {
+            .study-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            overflow: hidden;
+            position: sticky;
+            top: 90px;
+        }
+
+        .sidebar-header {
+            padding: 20px 20px 12px;
+            font-weight: 700;
+            color: #94a3b8;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .subject-group {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 8px;
+            margin-bottom: 4px;
+        }
+
+        .subject-label {
+            padding: 10px 20px 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .topic-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+            font-size: 0.95rem;
+            border-radius: 0;
+        }
+
+        .topic-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+        }
+
+        .topic-item.active {
+            background: rgba(96, 165, 250, 0.08);
+            color: #60a5fa;
+            border-right: 3px solid #60a5fa;
+        }
+
+        .topic-item.done .done-icon {
+            color: #10b981;
+        }
+
+        .done-icon {
+            width: 16px;
+            height: 16px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Progress Bar */
+        .progress-widget {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #60a5fa, #2dd4bf);
+            border-radius: 6px;
+            transition: width 0.6s;
+        }
+
+        /* Main Content pane */
+        .content-pane {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            padding: 36px;
+            min-height: 500px;
+        }
+
+        .content-pane h2 {
+            font-size: 1.8rem;
+            margin: 0 0 8px;
+        }
+
+        .meta-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .meta-tag {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .tag-beginner {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .tag-intermediate {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+        }
+
+        .tag-advanced {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .content-body {
+            color: #cbd5e1;
+            line-height: 1.8;
+            font-size: 1rem;
+            white-space: pre-wrap;
+        }
+
+        .code-block {
+            background: #0f111a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .mark-btn {
+            margin-top: 28px;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #60a5fa, #2dd4bf);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mark-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(96, 165, 250, 0.3);
+        }
+
+        .mark-btn.done-state {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-system">
+        <div class="grid-overlay"></div>
+    </div>
+    <nav class="navbar">
+        <div class="nav-brand"><i class="fa-solid fa-code text-gradient"></i> CodePrep</div>
+        <div class="nav-links">
+            <a href="interview-prep.html">← Interview Prep</a>
+        </div>
+    </nav>
+
+    <div class="page-wrap">
+        <div class="page-hero">
+            <div class="badge"><i class="fa-solid fa-server"></i> Core CS Subjects</div>
+            <h1 class="hero-title" style="font-size:3rem;margin-bottom:12px;">Master the <span
+                    class="text-gradient">Core Fundamentals</span></h1>
+            <p class="hero-subtitle" style="max-width:580px;margin:0 auto;">Topics pulled live from the database. Track
+                your progress as you go.</p>
+        </div>
+
+        <!-- Username quick setup -->
+        <div id="username-bar"
+            style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:16px 24px;display:flex;align-items:center;gap:12px;margin-bottom:28px;">
+            <i class="fa-solid fa-user" style="color:#60a5fa;"></i>
+            <input type="text" id="username-field" placeholder="Enter your name to track progress..."
+                style="flex:1;background:transparent;border:none;color:#fff;font-size:1rem;font-family:'Inter',sans-serif;"
+                value="">
+            <button onclick="loadProgress()"
+                style="background:rgba(96,165,250,0.15);color:#60a5fa;border:1px solid rgba(96,165,250,0.3);padding:8px 16px;border-radius:8px;font-weight:600;cursor:pointer;">Load
+                Progress</button>
+        </div>
+
+        <div class="study-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">Topics</div>
+                <div id="topic-list">
+                    <div style="padding:20px;color:#64748b;text-align:center;"><i
+                            class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
+                </div>
+                <div class="progress-widget">
+                    <div class="progress-label">
+                        <span>Your Progress</span>
+                        <span id="progress-label-text">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="sidebar-progress" style="width:0%"></div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Content Pane -->
+            <main class="content-pane" id="content-pane">
+                <div class="empty-state">
+                    <i class="fa-regular fa-hand-point-left"></i>
+                    <p>Select a topic from the sidebar to start studying.</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://localhost:8080/api/study';
+        let allTopics = [];
+        let completedIds = new Set();
+        let currentTopicId = null;
+        let username = localStorage.getItem('codeprep_username') || '';
+
+        if (username) document.getElementById('username-field').value = username;
+
+        async function init() {
+            try {
+                const res = await fetch(`${API}/topics?module=core-cs`);
+                allTopics = await res.json();
+                renderSidebar();
+                if (username) loadProgress();
+            } catch (e) {
+                document.getElementById('topic-list').innerHTML = `<div style="padding:20px;color:#ef4444;font-size:0.85rem;text-align:center;"><i class="fa-solid fa-triangle-exclamation"></i> Backend offline.</div>`;
+            }
+        }
+
+        function renderSidebar() {
+            const subjects = [...new Set(allTopics.map(t => t.subject))];
+            let html = '';
+            subjects.forEach(sub => {
+                html += `<div class="subject-group"><div class="subject-label">${sub}</div>`;
+                allTopics.filter(t => t.subject === sub).forEach(t => {
+                    const isDone = completedIds.has(t.id);
+                    html += `<div class="topic-item${currentTopicId === t.id ? ' active' : ''}${isDone ? ' done' : ''}" onclick="openTopic(${t.id})">
+                        <span class="done-icon">${isDone ? '<i class="fa-solid fa-check-circle"></i>' : '<i class="fa-regular fa-circle" style="color:#475569"></i>'}</span>
+                        <span>${t.title}</span>
+                    </div>`;
+                });
+                html += `</div>`;
+            });
+            document.getElementById('topic-list').innerHTML = html;
+        }
+
+        async function openTopic(id) {
+            currentTopicId = id;
+            renderSidebar();
+            const topic = allTopics.find(t => t.id === id);
+            if (!topic) return;
+
+            const diffClass = { Beginner: 'tag-beginner', Intermediate: 'tag-intermediate', Advanced: 'tag-advanced' }[topic.difficulty] || 'tag-beginner';
+            const isDone = completedIds.has(id);
+            const tags = (topic.tags || '').split(',').filter(Boolean);
+
+            document.getElementById('content-pane').innerHTML = `
+                <h2>${topic.title}</h2>
+                <div class="meta-row">
+                    <span class="meta-tag ${diffClass}">${topic.difficulty}</span>
+                    <span class="meta-tag" style="background:rgba(255,255,255,0.05);color:#94a3b8;">${topic.subject}</span>
+                    ${tags.map(t => `<span class="meta-tag" style="background:rgba(255,255,255,0.04);color:#64748b;">${t.trim()}</span>`).join('')}
+                </div>
+                <div class="content-body">${topic.content}</div>
+                ${topic.codeExample ? `<div class="code-block">${escHtml(topic.codeExample)}</div>` : ''}
+                <button class="mark-btn${isDone ? ' done-state' : ''}" id="mark-btn" onclick="markDone(${id})">
+                    ${isDone ? '<i class="fa-solid fa-check-circle"></i> Completed!' : '<i class="fa-solid fa-circle-check"></i> Mark as Complete'}
+                </button>`;
+        }
+
+        async function markDone(id) {
+            const name = document.getElementById('username-field').value.trim() || 'Anonymous';
+            username = name;
+            localStorage.setItem('codeprep_username', name);
+            try {
+                const res = await fetch(`${API}/progress/complete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, topicId: id })
+                });
+                const data = await res.json();
+                completedIds.add(id);
+                renderSidebar();
+                updateProgressUI(data.progressPercent, data.completedTopics, data.totalTopics);
+                document.getElementById('mark-btn').className = 'mark-btn done-state';
+                document.getElementById('mark-btn').innerHTML = '<i class="fa-solid fa-check-circle"></i> Completed!';
+            } catch (e) { alert('Could not save progress. Backend may be offline.'); }
+        }
+
+        async function loadProgress() {
+            const name = document.getElementById('username-field').value.trim();
+            if (!name) return;
+            username = name;
+            localStorage.setItem('codeprep_username', name);
+            try {
+                const res = await fetch(`${API}/progress?username=${encodeURIComponent(name)}`);
+                const data = await res.json();
+                completedIds = new Set(data.completedTopicIds);
+                renderSidebar();
+                updateProgressUI(data.progressPercent, data.completedCount, data.totalCount);
+            } catch (e) { }
+        }
+
+        function updateProgressUI(pct, done, total) {
+            document.getElementById('sidebar-progress').style.width = `${pct}%`;
+            document.getElementById('progress-label-text').textContent = `${done}/${total} (${pct}%)`;
+        }
+
+        function escHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

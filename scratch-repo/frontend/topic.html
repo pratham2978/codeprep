@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic Questions | CodePrep</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Checked rows */
+        .q-row.row-done {
+            opacity: 0.6;
+        }
+
+        /* Checkbox checked state */
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .checkbox:hover {
+            border-color: #ff7300;
+        }
+
+        .checkbox.checked {
+            background: #ff7300;
+            border-color: #ff7300;
+            color: #000;
+        }
+
+        /* Note button */
+        .note-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        .note-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .note-btn.has-note {
+            background: rgba(251, 191, 36, 0.08);
+            border-radius: 6px;
+        }
+
+        /* Star button */
+        .star-btn {
+            transition: transform 0.2s;
+        }
+
+        .star-btn:hover {
+            transform: scale(1.3);
+        }
+
+        .star-btn.starred {
+            animation: starPop 0.3s ease;
+        }
+
+        @keyframes starPop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.5);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Tab active state */
+        [data-tab].active {
+            background: rgba(255, 115, 0, 0.12) !important;
+            color: var(--primary) !important;
+            border-color: rgba(255, 115, 0, 0.3) !important;
+        }
+
+        /* Progress circle */
+        .q-progress-circle {
+            background: conic-gradient(#ff7300 0deg, rgba(255, 255, 255, 0.06) 0deg);
+            border-radius: 50%;
+            transition: background 0.6s;
+        }
+
+        /* Resource link icons spacing */
+        .q-table td a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .q-table td i {
+            pointer-events: none;
+        }
+
+        /* Accordion bar color */
+        .q-acc-progress {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+
+<body>
+    <div class="bg-system">
+        <div class="grid-overlay"></div>
+        <div class="ambient-orb orb-primary"></div>
+        <div class="ambient-orb orb-secondary"></div>
+    </div>
+
+    <!-- Main CodePrep Navbar -->
+    <nav class="navbar gsap-nav">
+        <div class="nav-brand">
+            <i class="fa-solid fa-code text-gradient"></i> CodePrep
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dsa-sheet.html" style="color: var(--text-main);">DSA Sheet</a>
+            <a href="leaderboard.html" style="color:#fbbf24;"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
+            <a href="features.html">Features</a>
+        </div>
+        <a href="#" class="nav-cta">Get Started</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="questions-container">
+
+        <!-- Header -->
+        <div
+            style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap;">
+            <div>
+                <h1 class="q-title">Loading Topic...</h1>
+                <p class="q-subtitle">Please wait...</p>
+            </div>
+
+            <div class="q-header-actions">
+                <button class="q-btn" style="color: #908272;"><i class="fa-solid fa-arrow-rotate-left"></i>
+                    Reset</button>
+                <button class="q-btn">Import <i class="fa-regular fa-file"></i></button>
+                <div class="q-btn" style="cursor: default;">Last updated : December 13, 2025</div>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-top: 32px; flex-wrap: wrap; gap: 16px;">
+            <div
+                style="display: flex; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+                <button class="q-btn active" style="border: none;">All Problems</button>
+                <button class="q-btn" style="border: none; background: transparent;">Revision</button>
+            </div>
+
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <button class="q-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <select class="q-select">
+                    <option>All problems</option>
+                </select>
+                <select class="q-select">
+                    <option>Difficulty</option>
+                </select>
+                <button class="q-btn"><i class="fa-solid fa-shuffle"></i> Random Problem</button>
+            </div>
+        </div>
+
+        <!-- Progress Card -->
+        <div class="q-progress-card">
+            <div class="q-progress-left">
+                <div class="q-progress-circle">0%</div>
+                <div class="q-progress-text">
+                    <h4>Overall Progress</h4>
+                    <p style="font-size: 1.1rem; font-weight: 600; color: #fff; margin-top: 4px;"><span
+                            id="stat-progress">0</span> <span
+                            style="font-size: 0.8rem; color: #94a3b8; font-weight: normal;">/ <span
+                                id="stat-total">0</span></span></p>
+                </div>
+            </div>
+            <div class="q-progress-stats">
+                <span><i class="fa-solid fa-circle dot-easy"></i> Easy <small id="stat-easy"> 0 / 0</small></span>
+                <span><i class="fa-solid fa-circle dot-med"></i> Medium <small id="stat-med"> 0 / 0</small></span>
+                <span><i class="fa-solid fa-circle dot-hard"></i> Hard <small id="stat-hard"> 0 / 0</small></span>
+            </div>
+        </div>
+
+        <!-- Accordion List TARGET -->
+        <div class="q-accordion">
+            <!-- Rendered by topic-renderer.js -->
+        </div>
+
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/topic-renderer.js"></script>
+    <script src="js/chatbot.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features | CodePrep</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: stretch;
+            margin-top: 60px;
+            padding: 0 20px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(255, 115, 0, 0.15), transparent 70%);
+            opacity: 0;
+            transition: 0.4s;
+            z-index: 0;
+        }
+
+        .feature-card>* {
+            z-index: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 115, 0, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .f-icon {
+            font-size: 3.5rem;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #ff7300, #ffb84d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 12px rgba(255, 115, 0, 0.3));
+        }
+
+        .f-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .f-desc {
+            color: #94a3b8;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        .f-btn {
+            padding: 12px 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-card:hover .f-btn {
+            background: linear-gradient(135deg, var(--primary), #e66800);
+            border-color: var(--primary);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(255, 115, 0, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-system">
+        <div class="grid-overlay"></div>
+        <div class="ambient-orb orb-primary" style="top: 20%; left: 10%; width: 500px; height: 500px;"></div>
+        <div class="ambient-orb orb-secondary" style="bottom: 10%; right: 10%; width: 600px; height: 600px;"></div>
+    </div>
+
+    <!-- Main CodePrep Navbar -->
+    <nav class="navbar gsap-nav">
+        <div class="nav-brand">
+            <i class="fa-solid fa-code text-gradient"></i> CodePrep
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dsa-sheet.html">DSA Sheet</a>
+            <a href="features.html" style="color: var(--text-main);">Features</a>
+        </div>
+        <a href="#" class="nav-cta">Get Started</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="patterns-container" style="padding-top: 140px; padding-bottom: 100px;">
+        <header class="patterns-header" style="text-align: center; margin-bottom: 20px;">
+            <div class="badge-new"
+                style="display: inline-block; padding: 6px 16px; background: rgba(255,115,0,0.1); border: 1px solid rgba(255,115,0,0.2); border-radius: 20px; color: #ff983f; font-weight: 600; font-size: 0.85rem; margin-bottom: 20px;">
+                <i class="fa-solid fa-star" style="margin-right: 6px;"></i> CodePrep Premium
+            </div>
+            <h1 class="hero-title" style="font-size: 3.5rem; margin-bottom: 24px;">
+                Explore Our <span class="text-gradient">Features</span>
+            </h1>
+            <p class="hero-subtitle" style="margin: 0 auto; line-height: 1.6; max-width: 650px; font-size: 1.15rem;">
+                Supercharge your career with our specialized dynamic modules built exactly to crack everything from
+                college exams to MAANG interviews.
+            </p>
+        </header>
+
+        <div class="features-grid">
+            <!-- 1. College Study -->
+            <a href="college-study.html" class="feature-card">
+                <i class="fa-solid fa-building-columns f-icon"></i>
+                <h3 class="f-title">College Study</h3>
+                <p class="f-desc">Master your university curriculum with structured notes, specific topic breakdowns,
+                    and previous year academic questions targeting high GPAs.</p>
+                <div class="f-btn">Explore Module <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+
+            <!-- 2. Aptitude Preparation -->
+            <a href="aptitude.html" class="feature-card">
+                <i class="fa-solid fa-brain f-icon"></i>
+                <h3 class="f-title">Aptitude Preparation</h3>
+                <p class="f-desc">Crack the rigorous online assessments with intensive modules covering quantitative
+                    reasoning, logical puzzles, and verbal agility.</p>
+                <div class="f-btn">Explore Module <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+
+            <!-- 3. Interview Preparation -->
+            <a href="interview-prep.html" class="feature-card">
+                <i class="fa-solid fa-user-tie f-icon"></i>
+                <h3 class="f-title">Interview Preparation</h3>
+                <p class="f-desc">Prepare for the ultimate behavioral & technical rounds. Get comprehensive insights
+                    into system design, core CS subjects, and mock interviews.</p>
+                <div class="f-btn">Explore Module <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+        </div>
+    </main>
+</body>
+
+</html>

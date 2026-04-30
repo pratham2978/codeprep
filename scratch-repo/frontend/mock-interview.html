@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Interviews | CodePrep</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .mock-header {
+            padding: 120px 40px 40px;
+            text-align: center;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto 100px;
+            padding: 0 20px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        .dash-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 32px;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .dash-card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Match Widget */
+        .match-widget {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .match-selectors {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .m-select {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            flex: 1;
+            min-width: 200px;
+            outline: none;
+        }
+        
+        .m-select option { background: #1e1e1e; }
+
+        .btn-match {
+            background: linear-gradient(135deg, var(--primary), #e66800);
+            color: #000;
+            border: none;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(255, 115, 0, 0.3);
+        }
+
+        .btn-match:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(255, 115, 0, 0.5);
+        }
+
+        /* Upcoming List */
+        .upcoming-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .upcoming-item {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 16px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .upcoming-item:hover {
+            border-color: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .u-info h4 { font-size: 1.1rem; margin-bottom: 6px; }
+        .u-info p { font-size: 0.85rem; color: #94a3b8; margin: 0; display: flex; align-items: center; gap: 8px; }
+        
+        .u-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            color: #000; font-weight: bold; font-size: 1.2rem;
+        }
+
+        .btn-join {
+            padding: 8px 16px;
+            background: rgba(34,197,94,0.15);
+            color: #4ade80;
+            border: 1px solid #4ade80;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .btn-join:hover {
+            background: #4ade80;
+            color: #000;
+        }
+        
+        .btn-disabled {
+            background: rgba(255,255,255,0.05);
+            color: #64748b;
+            border-color: transparent;
+            cursor: not-allowed;
+        }
+
+        /* AI Bot Widget */
+        .ai-widget {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), transparent);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            text-align: center;
+        }
+        
+        .ai-icon {
+            font-size: 3rem;
+            color: #10b981;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4));
+        }
+
+    </style>
+</head>
+<body>
+    <div class="bg-system">
+        <div class="grid-overlay"></div>
+        <div class="ambient-orb orb-primary" style="top: 20%; left: -10%;"></div>
+        <div class="ambient-orb orb-secondary" style="bottom: 10%; right: -10%;"></div>
+    </div>
+
+    <!-- Main Navbar -->
+    <nav class="navbar gsap-nav">
+        <div class="nav-brand">
+            <i class="fa-solid fa-code text-gradient"></i> CodePrep
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dsa-sheet.html">DSA Sheet</a>
+            <a href="features.html" style="color: var(--text-main);">Features</a>
+        </div>
+        <a href="#" class="nav-cta">Get Started</a>
+    </nav>
+
+    <!-- Header -->
+    <header class="mock-header">
+        <h1 class="hero-title" style="font-size: 2.8rem; margin-bottom: 16px;">
+            Peer-to-Peer <span class="text-gradient">Mock Interviews</span>
+        </h1>
+        <p class="hero-subtitle" style="margin: 0 auto; max-width: 650px;">
+            Practice live coding, system design, and communication skills with thousands of other candidates via real-time video pairing.
+        </p>
+    </header>
+
+    <!-- AI Interview Modal -->
+    <div id="ai-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(10px);">
+        <div style="background: #1e1e1e; border: 1px solid rgba(16, 185, 129, 0.3); padding: 40px; border-radius: 20px; width: 90%; max-width: 600px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+            <div class="ai-orb" style="width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle, #10b981, #047857); margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #fff; box-shadow: 0 0 30px rgba(16, 185, 129, 0.5); animation: pulse 2s infinite;">
+                <i class="fa-solid fa-robot"></i>
+            </div>
+            <h3 style="font-size: 1.5rem; margin-bottom: 16px; color: #fff;">AI Interviewer</h3>
+            <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; min-height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 30px;">
+                <p id="ai-subtitle" style="font-size: 1.2rem; line-height: 1.6; color: #4ade80; font-family: 'Fira Code', monospace; font-style: italic;">
+                    "Connecting to voice module..."
+                </p>
+            </div>
+            <!-- User Voice Transcription Box -->
+            <div style="background: rgba(0,0,0,0.5); padding: 16px; border-radius: 10px; min-height: 80px; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.1); text-align: left; position: relative;">
+                <span style="position: absolute; top: -10px; left: 16px; background: #1e1e1e; padding: 0 8px; font-size: 0.8rem; color: #94a3b8;"><i class="fa-solid fa-user"></i> Your Answer</span>
+                <p id="user-transcript" style="color: #fff; font-size: 1.05rem; line-height: 1.5; margin: 0; min-height: 48px;">
+                    <span style="color: #64748b; font-style: italic;">Click "Start Speaking" to answer...</span>
+                </p>
+            </div>
+
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <button onclick="endAiInterview()" style="padding: 12px 24px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s;">End Session</button>
+                <button id="btn-record" onclick="toggleRecording()" style="padding: 12px 24px; background: rgba(255, 115, 0, 0.15); color: #ff7300; border: 1px solid rgba(255, 115, 0, 0.3); border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s;"><i class="fa-solid fa-microphone"></i> Start Speaking</button>
+                <button onclick="nextAiQuestion()" style="padding: 12px 24px; background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s;">Next Question <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); transform: scale(0.98); }
+            50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); transform: scale(1.02); }
+            100% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); transform: scale(0.98); }
+        }
+    </style>
+
+    <!-- Dashboard -->
+    <main class="dashboard-grid">
+        
+        <!-- Left Side: Match & Upcoming -->
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+            
+            <!-- Quick Match -->
+            <div class="dash-card">
+                <h2><i class="fa-solid fa-bolt text-gradient"></i> Start an Interview Now</h2>
+                <div class="match-widget">
+                    <div class="match-selectors">
+                        <select class="m-select" id="topic-select">
+                            <option value="dsa">Data Structures & Algorithms</option>
+                            <option value="system-design">System Design (HLD/LLD)</option>
+                            <option value="frontend">Frontend & React</option>
+                            <option value="backend">Backend & Databases</option>
+                        </select>
+                        <select class="m-select" id="difficulty-select">
+                            <option value="easy">Easy (Intern Level)</option>
+                            <option value="medium" selected>Medium (New Grad)</option>
+                            <option value="hard">Hard (Senior Level)</option>
+                        </select>
+                    </div>
+                    <button class="btn-match" onclick="findMatch()">
+                        <i class="fa-solid fa-satellite-dish"></i> Find a Match (ETA: 1m 20s)
+                    </button>
+                    <p id="match-status" style="text-align: center; color: #fbbf24; display: none; margin-top: 10px; font-weight: 500;">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i> Searching for an available peer...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Upcoming Interviews -->
+            <div class="dash-card">
+                <h2><i class="fa-regular fa-calendar-check"></i> Scheduled Interviews</h2>
+                <div class="upcoming-list">
+                    <!-- Item 1 -->
+                    <div class="upcoming-item">
+                        <div style="display: flex; gap: 16px; align-items: center;">
+                            <div class="u-avatar">S</div>
+                            <div class="u-info">
+                                <h4>Sarah J.</h4>
+                                <p><i class="fa-regular fa-clock"></i> Today at 8:00 PM • DSA Medium</p>
+                            </div>
+                        </div>
+                        <a href="#" class="btn-join" onclick="alert('Joining Interview Room! Microphone and Camera enabled.')">Join Room</a>
+                    </div>
+                    
+                    <!-- Item 2 -->
+                    <div class="upcoming-item">
+                        <div style="display: flex; gap: 16px; align-items: center;">
+                            <div class="u-avatar" style="background: #3b82f6;">M</div>
+                            <div class="u-info">
+                                <h4>Michael C.</h4>
+                                <p><i class="fa-regular fa-clock"></i> Tomorrow at 2:30 PM • System Design</p>
+                            </div>
+                        </div>
+                        <span class="btn-join btn-disabled" title="Room opens 5 minutes before">Starts later</span>
+                    </div>
+                </div>
+                <button style="width: 100%; margin-top: 20px; padding: 12px; background: rgba(255,255,255,0.05); color: #fff; border: 1px dashed rgba(255,255,255,0.2); border-radius: 8px; cursor: pointer; transition: 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                    <i class="fa-solid fa-plus"></i> Schedule for Later
+                </button>
+            </div>
+            
+        </div>
+
+        <!-- Right Side: Stats & AI -->
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+            
+            <!-- AI Bot -->
+            <div class="dash-card ai-widget">
+                <i class="fa-solid fa-robot ai-icon"></i>
+                <h3 style="font-size: 1.3rem; margin-bottom: 12px;">AI Interviewer <span style="font-size: 0.7rem; vertical-align: top; background: #10b981; color:#000; padding:2px 6px; border-radius:10px;">BETA</span></h3>
+                <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 24px; line-height: 1.5;">Not ready for a real human? practice answering behavioral & technical questions with our voice-enabled AI bot.</p>
+                <button class="btn-match" style="background: rgba(16, 185, 129, 0.15); color: #10b981; box-shadow: none; border: 1px solid rgba(16, 185, 129, 0.3); width: 100%;" onclick="startAiInterview()">
+                    <i class="fa-solid fa-microphone"></i> Start AI Session
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="dash-card" style="padding: 24px;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px;"><i class="fa-solid fa-chart-line"></i> Your Statistics</h3>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                    <span style="color: #94a3b8;">Interviews Completed</span>
+                    <span style="font-weight: bold; font-family: 'Fira Code', monospace;">12</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                    <span style="color: #94a3b8;">Average Rating</span>
+                    <span style="font-weight: bold; font-family: 'Fira Code', monospace; color: #fbbf24;"><i class="fa-solid fa-star"></i> 4.8</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: #94a3b8;">Current Streak</span>
+                    <span style="font-weight: bold; font-family: 'Fira Code', monospace; color: #ff7300;"><i class="fa-solid fa-fire"></i> 3 Days</span>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        function findMatch() {
+            const btn = document.querySelector('.btn-match');
+            const status = document.getElementById('match-status');
+            
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting to matchmaking servers...';
+            btn.style.opacity = '0.8';
+            btn.style.pointerEvents = 'none';
+            status.style.display = 'block';
+
+            setTimeout(() => {
+                status.innerHTML = '<i class="fa-solid fa-check" style="color:#4ade80;"></i> Match found! Creating secure video room...';
+                status.style.color = '#4ade80';
+                
+                setTimeout(() => {
+                    // Redirect to the simulated Video room
+                    window.location.href = "video-room.html";
+                    
+                    // Reset UI (in case user comes back)
+                    btn.innerHTML = '<i class="fa-solid fa-satellite-dish"></i> Find a Match (ETA: 1m 20s)';
+                    btn.style.opacity = '1';
+                    btn.style.pointerEvents = 'all';
+                    status.style.display = 'none';
+                    status.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Searching for an available peer...';
+                    status.style.color = '#fbbf24';
+                }, 1500);
+
+            }, 2500);
+        }
+
+        // --- AI Voice Bot Implementation ---
+        const aiQuestions = [
+            "Hello! Welcome to your mock interview at Code Prep. Let's start with an easy one. Could you please tell me a little bit about yourself?",
+            "Great to meet you. Now, can you describe a time when you had to overcome a difficult technical challenge in a project?",
+            "Moving onto some technical basics. Explain to me the exact difference between an Array and a Linked List.",
+            "That's interesting. What is the time complexity of searching in a Binary Search Tree?",
+            "One last question: High level, how would you design a scalable U.R.L. shortening service like bit ly?",
+            "Thank you so much for your time today. Excellent job articulating your answers. Our recruiting team will get back to you shortly."
+        ];
+        
+        let currentQuestionIndex = 0;
+        let speechSynth = window.speechSynthesis;
+
+        // Preload voices
+        speechSynth.getVoices();
+
+        function startAiInterview() {
+            document.getElementById('ai-modal').style.display = 'flex';
+            currentQuestionIndex = 0;
+            
+            // Play immediately to preserve user activation context (prevents browser audio blocking)
+            playQuestion(currentQuestionIndex);
+        }
+
+        function playQuestion(index) {
+            if (index >= aiQuestions.length) return;
+            
+            const text = aiQuestions[index];
+            document.getElementById('ai-subtitle').innerText = `"${text}"`;
+            
+            if (speechSynth.speaking) {
+                speechSynth.cancel();
+            }
+            
+            let utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.95; 
+            utterance.pitch = 1.05;
+            utterance.volume = 1.0;
+            
+            let voices = speechSynth.getVoices();
+            if(voices.length > 0) {
+                let preferredVoice = voices.find(v => v.lang.includes('en-GB') || v.lang.includes('en-US')) || voices[0];
+                if (preferredVoice) utterance.voice = preferredVoice;
+                speechSynth.speak(utterance);
+            } else {
+                // Wait for voices to load if it's the very first time
+                speechSynth.onvoiceschanged = () => {
+                    voices = speechSynth.getVoices();
+                    let preferredVoice = voices.find(v => v.lang.includes('en-GB') || v.lang.includes('en-US')) || voices[0];
+                    if (preferredVoice) utterance.voice = preferredVoice;
+                    speechSynth.speak(utterance);
+                    speechSynth.onvoiceschanged = null;
+                };
+                // Fallback attempt
+                speechSynth.speak(utterance);
+            }
+        }
+
+        function nextAiQuestion() {
+            if (isRecording) {
+                toggleRecording(); 
+            }
+            document.getElementById('user-transcript').innerHTML = '<span style="color: #64748b; font-style: italic;">Click "Start Speaking" to answer...</span>';
+            
+            currentQuestionIndex++;
+            if (currentQuestionIndex < aiQuestions.length) {
+                playQuestion(currentQuestionIndex);
+            } else {
+                endAiInterview();
+            }
+        }
+
+        function endAiInterview() {
+            if (isRecording) toggleRecording();
+            if (speechSynth.speaking) {
+                speechSynth.cancel();
+            }
+            document.getElementById('ai-modal').style.display = 'none';
+        }
+
+        // --- Web Speech Recognition (User Voice to Text) ---
+        let recognition;
+        let isRecording = false;
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            
+            recognition.onresult = function(event) {
+                let interimTranscript = '';
+                let finalTranscript = '';
+                
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    let transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript + ' ';
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+                
+                const transcriptBox = document.getElementById('user-transcript');
+                
+                if (transcriptBox.innerText.includes("Click \"Start Speaking\"")) {
+                    transcriptBox.innerHTML = '';
+                }
+                
+                // Append final text to what's already there
+                if(finalTranscript) {
+                    let currentHtml = transcriptBox.innerHTML;
+                    // remove interim spans if logic caused overlap
+                    currentHtml = currentHtml.replace(/<span style="color: #94a3b8;">.*?<\/span>/g, '');
+                    transcriptBox.innerHTML = currentHtml + finalTranscript;
+                }
+                
+                // Append glowing interim text temporarily
+                if (interimTranscript) {
+                    let currentHtml = transcriptBox.innerHTML;
+                    currentHtml = currentHtml.replace(/<span style="color: #94a3b8;">.*?<\/span>/g, '');
+                    transcriptBox.innerHTML = currentHtml + '<span style="color: #94a3b8;">' + interimTranscript + '</span>';
+                }
+            };
+            
+            recognition.onerror = function(event) {
+                console.error("Speech recognition error", event.error);
+                if (event.error === 'not-allowed') {
+                    alert("Microphone access was denied! Please allow microphone access in your browser to speak to the AI.");
+                    if(isRecording) toggleRecording();
+                }
+            };
+            
+            recognition.onend = function() {
+                // If Chrome falsely stops the microphone mid-speech while they are still in recording mode
+                if (isRecording) recognition.start();
+            };
+        }
+
+        function toggleRecording() {
+            if (!recognition) {
+                alert("Speech Recognition API is not natively supported in this browser. Please use Chrome or Edge!");
+                return;
+            }
+            
+            const btn = document.getElementById('btn-record');
+            const transcriptBox = document.getElementById('user-transcript');
+            
+            if (isRecording) {
+                isRecording = false;
+                recognition.stop();
+                btn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Speaking';
+                btn.style.background = 'rgba(255, 115, 0, 0.15)';
+                btn.style.color = '#ff7300';
+                btn.style.borderColor = 'rgba(255, 115, 0, 0.3)';
+            } else {
+                if (speechSynth.speaking) {
+                    speechSynth.cancel();
+                }
+                
+                if (transcriptBox.innerText.includes("Click \"Start Speaking\"")) {
+                    transcriptBox.innerHTML = '';
+                }
+                
+                isRecording = true;
+                recognition.start();
+                btn.innerHTML = '<i class="fa-solid fa-stop"></i> Microphone Listening...';
+                btn.style.background = 'rgba(239, 68, 68, 0.15)';
+                btn.style.color = '#ef4444';
+                btn.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+            }
+        }
+    </script>
+</body>
+</html>

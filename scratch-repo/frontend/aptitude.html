@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptitude Preparation | CodePrep</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@500&display=swap"
+        rel="stylesheet">
+    <style>
+        .apt-hero {
+            padding: 120px 40px 60px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            max-width: 1100px;
+            margin: 0 auto 80px;
+            padding: 0 28px;
+            position: relative;
+            z-index: 10;
+        }
+
+        @media(max-width: 800px) {
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cat-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 20px;
+            padding: 36px 28px;
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+            transition: 0.35s cubic-bezier(.4, 0, .2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cat-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            opacity: 0;
+            transition: 0.35s;
+        }
+
+        .cat-card.quant::after {
+            background: radial-gradient(circle at top right, rgba(251, 191, 36, 0.12), transparent 60%);
+        }
+
+        .cat-card.logical::after {
+            background: radial-gradient(circle at top right, rgba(96, 165, 250, 0.12), transparent 60%);
+        }
+
+        .cat-card.verbal::after {
+            background: radial-gradient(circle at top right, rgba(167, 139, 250, 0.12), transparent 60%);
+        }
+
+        .cat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .cat-card:hover::after {
+            opacity: 1;
+        }
+
+        .cat-card.quant:hover {
+            border-color: rgba(251, 191, 36, 0.4);
+        }
+
+        .cat-card.logical:hover {
+            border-color: rgba(96, 165, 250, 0.4);
+        }
+
+        .cat-card.verbal:hover {
+            border-color: rgba(167, 139, 250, 0.4);
+        }
+
+        .cat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+        }
+
+        .cat-card.quant .cat-icon {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+        }
+
+        .cat-card.logical .cat-icon {
+            background: rgba(96, 165, 250, 0.1);
+            color: #60a5fa;
+        }
+
+        .cat-card.verbal .cat-icon {
+            background: rgba(167, 139, 250, 0.1);
+            color: #a78bfa;
+        }
+
+        .cat-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .cat-desc {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .cat-meta {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+
+        .cat-card.quant .cat-meta {
+            color: #fbbf24;
+        }
+
+        .cat-card.logical .cat-meta {
+            color: #60a5fa;
+        }
+
+        .cat-card.verbal .cat-meta {
+            color: #a78bfa;
+        }
+
+        .start-btn {
+            margin-top: auto;
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .cat-card.quant .start-btn {
+            background: rgba(251, 191, 36, 0.12);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.25);
+        }
+
+        .cat-card.quant .start-btn:hover {
+            background: #fbbf24;
+            color: #000;
+        }
+
+        .cat-card.logical .start-btn {
+            background: rgba(96, 165, 250, 0.12);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.25);
+        }
+
+        .cat-card.logical .start-btn:hover {
+            background: #60a5fa;
+            color: #000;
+        }
+
+        .cat-card.verbal .start-btn {
+            background: rgba(167, 139, 250, 0.12);
+            color: #a78bfa;
+            border: 1px solid rgba(167, 139, 250, 0.25);
+        }
+
+        .cat-card.verbal .start-btn:hover {
+            background: #a78bfa;
+            color: #000;
+        }
+
+        /* Leaderboard */
+        .leaderboard-section {
+            max-width: 800px;
+            margin: 0 auto 100px;
+            padding: 0 28px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .lb-header {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .lb-table {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .lb-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 120px 100px 100px;
+            align-items: center;
+            padding: 18px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            transition: 0.2s;
+            gap: 12px;
+        }
+
+        .lb-row:last-child {
+            border-bottom: none;
+        }
+
+        .lb-row:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .lb-row.head {
+            background: rgba(255, 255, 255, 0.04);
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .rank-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .rank-1 {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #000;
+        }
+
+        .rank-2 {
+            background: linear-gradient(135deg, #94a3b8, #64748b);
+            color: #fff;
+        }
+
+        .rank-3 {
+            background: linear-gradient(135deg, #cd7f32, #a05a2c);
+            color: #fff;
+        }
+
+        .rank-other {
+            background: rgba(255, 255, 255, 0.06);
+            color: #94a3b8;
+        }
+
+        .tag-cat {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .tag-quantitative {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+        }
+
+        .tag-logical {
+            background: rgba(96, 165, 250, 0.1);
+            color: #60a5fa;
+        }
+
+        .tag-verbal {
+            background: rgba(167, 139, 250, 0.1);
+            color: #a78bfa;
+        }
+
+        .score-bar-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .score-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #fbbf24, #f97316);
+            border-radius: 6px;
+            transition: width 1s ease-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-system">
+        <div class="grid-overlay"></div>
+        <div class="ambient-orb orb-primary"
+            style="top:-5%;left:50%;transform:translateX(-50%);width:700px;height:700px;opacity:0.12;"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-brand"><i class="fa-solid fa-code text-gradient"></i> CodePrep</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dsa-sheet.html">DSA Sheet</a>
+            <a href="features.html">Features</a>
+        </div>
+        <a href="#" class="nav-cta">Get Started</a>
+    </nav>
+
+    <header class="apt-hero">
+        <div
+            style="display:inline-block;padding:6px 16px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:20px;color:#fbbf24;font-weight:600;font-size:0.85rem;margin-bottom:20px;">
+            <i class="fa-solid fa-brain"></i> Aptitude Engine
+        </div>
+        <h1 class="hero-title" style="font-size:3.5rem;margin-bottom:16px;">
+            Crack Every <span class="text-gradient">Placement Test</span>
+        </h1>
+        <p class="hero-subtitle" style="max-width:600px;margin:0 auto 40px;">
+            Questions served live from our database. 10-minute timed tests. Instant scoring and review. Real leaderboard
+            — all powered by our Spring Boot backend.
+        </p>
+    </header>
+
+    <!-- Category Cards -->
+    <div class="categories-grid">
+        <a href="aptitude-quiz.html?category=quantitative" class="cat-card quant">
+            <div class="cat-icon"><i class="fa-solid fa-square-root-variable"></i></div>
+            <h2 class="cat-title">Quantitative</h2>
+            <p class="cat-desc">Arithmetic, Percentages, Ratios, Probability, Time & Work, Trains & Speed — all classic
+                campus placement math.</p>
+            <span class="cat-meta">~10 Questions · 10 min</span>
+            <button class="start-btn"><i class="fa-solid fa-play"></i> Start Test</button>
+        </a>
+        <a href="aptitude-quiz.html?category=logical" class="cat-card logical">
+            <div class="cat-icon"><i class="fa-solid fa-puzzle-piece"></i></div>
+            <h2 class="cat-title">Logical Reasoning</h2>
+            <p class="cat-desc">Series, Analogies, Directions, Blood Relations, Coding-Decoding — sharpen your critical
+                thinking under pressure.</p>
+            <span class="cat-meta">~10 Questions · 10 min</span>
+            <button class="start-btn"><i class="fa-solid fa-play"></i> Start Test</button>
+        </a>
+        <a href="aptitude-quiz.html?category=verbal" class="cat-card verbal">
+            <div class="cat-icon"><i class="fa-solid fa-spell-check"></i></div>
+            <h2 class="cat-title">Verbal Ability</h2>
+            <p class="cat-desc">Synonyms, Antonyms, Sentence Correction, Fill in the Blanks — essential English skills
+                for every MNC screening round.</p>
+            <span class="cat-meta">~10 Questions · 10 min</span>
+            <button class="start-btn"><i class="fa-solid fa-play"></i> Start Test</button>
+        </a>
+    </div>
+
+    <!-- Live Leaderboard -->
+    <section class="leaderboard-section">
+        <h2 class="lb-header"><i class="fa-solid fa-trophy" style="color:#fbbf24;"></i> Global Leaderboard</h2>
+        <div class="lb-table">
+            <div class="lb-row head">
+                <span>Rank</span><span>Candidate</span><span>Category</span><span>Score</span><span>Progress</span>
+            </div>
+            <div id="lb-body">
+                <div style="padding:32px;text-align:center;color:#64748b;"><i class="fa-solid fa-spinner fa-spin"></i>
+                    Loading results...</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const API = 'http://localhost:8080/api/aptitude';
+
+        async function loadLeaderboard() {
+            try {
+                const res = await fetch(`${API}/leaderboard`);
+                const data = await res.json();
+                const body = document.getElementById('lb-body');
+
+                if (!data || data.length === 0) {
+                    body.innerHTML = `<div style="padding:32px;text-align:center;color:#64748b;">No scores yet. Be the first to take a test!</div>`;
+                    return;
+                }
+
+                body.innerHTML = data.map((s, i) => {
+                    const pct = s.totalQuestions > 0 ? Math.round(s.score / s.totalQuestions * 100) : 0;
+                    const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-other';
+                    return `
+                        <div class="lb-row">
+                            <span><div class="rank-badge ${rankClass}">${i + 1}</div></span>
+                            <span style="font-weight:600;">${s.username}</span>
+                            <span><span class="tag-cat tag-${s.category}">${s.category}</span></span>
+                            <span style="font-family:'Fira Code',monospace;color:#fbbf24;font-weight:600;">${s.score}/${s.totalQuestions}</span>
+                            <span>
+                                <div class="score-bar-wrap">
+                                    <div class="score-bar"><div class="score-fill" style="width:${pct}%"></div></div>
+                                    <span style="font-size:0.8rem;color:#94a3b8;">${pct}%</span>
+                                </div>
+                            </span>
+                        </div>`;
+                }).join('');
+            } catch (e) {
+                document.getElementById('lb-body').innerHTML = `<div style="padding:32px;text-align:center;color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Could not connect to backend. Make sure Spring Boot is running on port 8080.</div>`;
+            }
+        }
+
+        loadLeaderboard();
+    </script>
+</body>
+
+</html>

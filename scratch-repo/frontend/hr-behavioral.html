@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR & Behavioral | CodePrep</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            overflow-y: auto;
+        }
+
+        .page-wrap {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 100px 20px 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+
+        .ftab {
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.02);
+            color: #94a3b8;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: capitalize;
+        }
+
+        .ftab.active {
+            background: rgba(251, 191, 36, 0.12);
+            border-color: rgba(251, 191, 36, 0.3);
+            color: #fbbf24;
+        }
+
+        .q-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: 0.3s;
+        }
+
+        .q-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+        .diff-badge {
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .diff-Common {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .diff-Tough {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+        }
+
+        .diff-Senior {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .expand-btn {
+            background: transparent;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: 0.2s;
+            padding: 4px 8px;
+            margin-left: 12px;
+        }
+
+        .q-card.expanded .expand-btn {
+            color: #fbbf24;
+        }
+
+        .star-section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .q-card.expanded .star-section {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .star-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        @media(max-width:600px) {
+            .star-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .star-letter {
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .star-s {
+            background: rgba(96, 165, 250, 0.1);
+            color: #60a5fa;
+        }
+
+        .star-t {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+        }
+
+        .star-a {
+            background: rgba(167, 139, 250, 0.1);
+            color: #a78bfa;
+        }
+
+        .star-r {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .sample-answer {
+            background: #0f111a;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 10px;
+            padding: 16px;
+            color: #cbd5e1;
+            line-height: 1.7;
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+        }
+
+        .star-labels {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 4px;
+            color: #64748b;
+        }
+
+        .keywords-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .kw-tag {
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            background: rgba(255, 255, 255, 0.04);
+            color: #64748b;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .your-answer-box {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 14px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 100px;
+            margin-top: 12px;
+            box-sizing: border-box;
+        }
+
+        .your-answer-box:focus {
+            outline: none;
+            border-color: rgba(251, 191, 36, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-system">
+        <div class="grid-overlay"></div>
+    </div>
+    <nav class="navbar">
+        <div class="nav-brand"><i class="fa-solid fa-code text-gradient"></i> CodePrep</div>
+        <div class="nav-links"><a href="interview-prep.html">← Interview Prep</a></div>
+    </nav>
+    <div class="page-wrap">
+        <div style="text-align:center;margin-bottom:44px;">
+            <div
+                style="display:inline-block;padding:6px 16px;background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);border-radius:20px;color:#c4b5fd;font-weight:600;font-size:0.85rem;margin-bottom:16px;">
+                <i class="fa-solid fa-handshake"></i> HR & Behavioral</div>
+            <h1 class="hero-title" style="font-size:3rem;margin-bottom:12px;">Master the <span
+                    class="text-gradient">STAR Method</span></h1>
+            <p class="hero-subtitle" style="max-width:580px;margin:0 auto;">Live question bank from MySQL. Expand any
+                question to see a sample STAR answer and practice your own.</p>
+        </div>
+
+        <!-- STAR Guide -->
+        <div
+            style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:24px;margin-bottom:32px;">
+            <h3 style="margin:0 0 16px;font-size:1.1rem;"><i class="fa-solid fa-star" style="color:#fbbf24;"></i> The
+                STAR Method</h3>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+                <div class="star-letter star-s">
+                    <div style="font-size:1.8rem;">S</div>
+                    <div class="star-labels">Situation<br><span style="font-weight:400;">Set the context</span></div>
+                </div>
+                <div class="star-letter star-t">
+                    <div style="font-size:1.8rem;">T</div>
+                    <div class="star-labels">Task<br><span style="font-weight:400;">Your responsibility</span></div>
+                </div>
+                <div class="star-letter star-a">
+                    <div style="font-size:1.8rem;">A</div>
+                    <div class="star-labels">Action<br><span style="font-weight:400;">What you did</span></div>
+                </div>
+                <div class="star-letter star-r">
+                    <div style="font-size:1.8rem;">R</div>
+                    <div class="star-labels">Result<br><span style="font-weight:400;">Measurable outcome</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filter-tabs" id="filter-tabs">
+            <button class="ftab active" onclick="filterBy('all',this)">All</button>
+        </div>
+
+        <!-- Questions -->
+        <div id="q-list">
+            <div style="padding:40px;text-align:center;color:#64748b;"><i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+            </div>
+        </div>
+    </div>
+    <script>
+        const API = 'http://localhost:8080/api/behavioral';
+        let questions = [];
+
+        async function init() {
+            try {
+                const res = await fetch(`${API}/questions`);
+                questions = await res.json();
+                buildFilters();
+                renderQuestions(questions);
+            } catch (e) {
+                document.getElementById('q-list').innerHTML = `<div style="padding:40px;text-align:center;color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Backend offline.</div>`;
+            }
+        }
+
+        function buildFilters() {
+            const cats = ['all', ...new Set(questions.map(q => q.category))];
+            document.getElementById('filter-tabs').innerHTML = cats.map((c, i) =>
+                `<button class="ftab${i === 0 ? ' active' : ''}" onclick="filterBy('${c}',this)">${c === 'all' ? 'All' : c}</button>`
+            ).join('');
+        }
+
+        function filterBy(cat, btn) {
+            document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderQuestions(cat === 'all' ? questions : questions.filter(q => q.category === cat));
+        }
+
+        function renderQuestions(list) {
+            document.getElementById('q-list').innerHTML = list.map(q => {
+                const kws = (q.keywords || '').split(',').filter(Boolean);
+                const parts = q.starSample ? q.starSample.split(/(?=S:|T:|A:|R:)/) : [];
+                return `<div class="q-card" id="qc-${q.id}">
+                    <div class="q-header">
+                        <p class="q-text">${q.question}</p>
+                        <div style="display:flex;align-items:center;flex-shrink:0;gap:8px;margin-left:12px;">
+                            <span class="diff-badge diff-${q.difficulty}">${q.difficulty}</span>
+                            <button class="expand-btn" onclick="toggleQ(${q.id})"><i class="fa-solid fa-chevron-down"></i></button>
+                        </div>
+                    </div>
+                    <div class="keywords-row">${kws.map(k => `<span class="kw-tag">${k.trim()}</span>`).join('')}</div>
+                    <div class="star-section">
+                        <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:8px;font-weight:600;">SAMPLE STAR ANSWER</p>
+                        <div class="sample-answer">${q.starSample || 'No sample available.'}</div>
+                        <p style="color:#94a3b8;font-size:0.85rem;margin:16px 0 6px;font-weight:600;">YOUR PRACTICE ANSWER</p>
+                        <textarea class="your-answer-box" placeholder="Type your own STAR answer here to practice..."></textarea>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function toggleQ(id) {
+            const card = document.getElementById(`qc-${id}`);
+            document.querySelectorAll('.q-card.expanded').forEach(c => { if (c.id !== `qc-${id}`) c.classList.remove('expanded'); });
+            card.classList.toggle('expanded');
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array Questions | CodePrep</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-system">
+        <div class="grid-overlay"></div>
+        <div class="ambient-orb orb-primary"></div>
+        <div class="ambient-orb orb-secondary"></div>
+    </div>
+
+    <!-- Main CodePrep Navbar -->
+    <nav class="navbar gsap-nav">
+        <div class="nav-brand">
+            <i class="fa-solid fa-code text-gradient"></i> CodePrep
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dsa-sheet.html" style="color: var(--text-main);">DSA Sheet</a>
+            <a href="#">System Design</a>
+        </div>
+        <a href="#" class="nav-cta">Get Started</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="questions-container">
+        
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap;">
+            <div>
+                <h1 class="q-title">Top Array Interview Questions - Structured Path with Video Solutions</h1>
+                <p class="q-subtitle">Given below is the best-structured path to learn Array with the best video tutorials, and at the same time practice problems which are asked in top tech giants like Google, Amazon, Facebook, etc, and startups like Swiggy, Zomato, Paytm, and others.</p>
+            </div>
+            
+            <div class="q-header-actions">
+                <button class="q-btn" style="color: #908272;"><i class="fa-solid fa-arrow-rotate-left"></i> Reset</button>
+                <button class="q-btn">Import <i class="fa-regular fa-file"></i></button>
+                <div class="q-btn" style="cursor: default;">Last updated : December 13, 2025</div>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 32px; flex-wrap: wrap; gap: 16px;">
+            <div style="display: flex; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+                <button class="q-btn active" style="border: none;">All Problems</button>
+                <button class="q-btn" style="border: none; background: transparent;">Revision</button>
+            </div>
+            
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <button class="q-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <select class="q-select">
+                    <option>All problems</option>
+                </select>
+                <select class="q-select">
+                    <option>Difficulty</option>
+                </select>
+                <button class="q-btn"><i class="fa-solid fa-shuffle"></i> Random Problem</button>
+            </div>
+        </div>
+
+        <!-- Progress Card -->
+        <div class="q-progress-card">
+            <div class="q-progress-left">
+                <div class="q-progress-circle">0%</div>
+                <div class="q-progress-text">
+                    <h4>Overall Progress</h4>
+                    <p style="font-size: 1.1rem; font-weight: 600; color: #fff; margin-top: 4px;">0 <span style="font-size: 0.8rem; color: #94a3b8; font-weight: normal;">/ 43</span></p>
+                </div>
+            </div>
+            <div class="q-progress-stats">
+                <span><i class="fa-solid fa-circle dot-easy"></i> Easy <small> 0 / 14</small></span>
+                <span><i class="fa-solid fa-circle dot-med"></i> Medium <small> 0 / 22</small></span>
+                <span><i class="fa-solid fa-circle dot-hard"></i> Hard <small> 0 / 7</small></span>
+            </div>
+        </div>
+
+        <!-- Accordion List -->
+        <div class="q-accordion">
+            <!-- Basic Expanded -->
+            <div class="q-acc-item expanded">
+                <div class="q-acc-header">
+                    <div class="q-acc-title">
+                        <i class="fa-solid fa-chevron-right"></i> Basic
+                    </div>
+                    <div class="q-acc-progress">
+                        <div class="q-acc-bar"></div>
+                        0 / 5
+                    </div>
+                </div>
+                <div class="q-acc-body">
+                    <div class="q-table-wrap">
+                        <table class="q-table">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Problem</th>
+                                    <th style="min-width: 60px;"></th>
+                                    <th>Resource<br><span class="plus-tag" style="margin-left:0;">Plus</span></th>
+                                    <th>Resource</th>
+                                    <th>Practice</th>
+                                    <th>Note</th>
+                                    <th>Revision</th>
+                                    <th>Difficulty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="checkbox"></span></td>
+                                    <td>Largest Element</td>
+                                    <td><a href="#" class="link-solve">Solve</a></td>
+                                    <td><i class="fa-brands fa-youtube" style="color: #f97316;"></i></td>
+                                    <td><i class="fa-regular fa-file-lines icon-doc"></i> <i class="fa-brands fa-youtube icon-resource"></i></td>
+                                    <td><span style="color: #64748b;">---</span></td>
+                                    <td><i class="fa-solid fa-circle-plus icon-add"></i></td>
+                                    <td><i class="fa-regular fa-star icon-star"></i></td>
+                                    <td><span class="badge easy">Easy</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="checkbox"></span></td>
+                                    <td>Check if the Array is Sorted II</td>
+                                    <td><a href="#" class="link-solve">Solve</a></td>
+                                    <td><i class="fa-brands fa-youtube" style="color: #f97316;"></i></td>
+                                    <td><i class="fa-regular fa-file-lines icon-doc"></i> <i class="fa-brands fa-youtube icon-resource"></i></td>
+                                    <td><i class="fa-solid fa-code icon-practice"></i></td>
+                                    <td><i class="fa-solid fa-circle-plus icon-add"></i></td>
+                                    <td><i class="fa-regular fa-star icon-star"></i></td>
+                                    <td><span class="badge easy">Easy</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="checkbox"></span></td>
+                                    <td>Second Largest Element</td>
+                                    <td><a href="#" class="link-solve">Solve</a></td>
+                                    <td><i class="fa-brands fa-youtube" style="color: #f97316;"></i></td>
+                                    <td><i class="fa-regular fa-file-lines icon-doc"></i> <i class="fa-brands fa-youtube icon-resource"></i></td>
+                                    <td><span style="color: #64748b;">---</span></td>
+                                    <td><i class="fa-solid fa-circle-plus icon-add"></i></td>
+                                    <td><i class="fa-regular fa-star icon-star"></i></td>
+                                    <td><span class="badge easy">Easy</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="checkbox"></span></td>
+                                    <td>Linear Search</td>
+                                    <td><a href="#" class="link-solve">Solve</a></td>
+                                    <td><i class="fa-brands fa-youtube" style="color: #f97316;"></i></td>
+                                    <td><i class="fa-regular fa-file-lines icon-doc"></i> <i class="fa-brands fa-youtube icon-resource"></i></td>
+                                    <td><span style="color: #64748b;">---</span></td>
+                                    <td><i class="fa-solid fa-circle-plus icon-add"></i></td>
+                                    <td><i class="fa-regular fa-star icon-star"></i></td>
+                                    <td><span class="badge easy">Easy</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="checkbox"></span></td>
+                                    <td>Left Rotate Array by One</td>
+                                    <td><a href="#" class="link-solve">Solve</a></td>
+                                    <td><i class="fa-brands fa-youtube" style="color: #f97316;"></i></td>
+                                    <td><i class="fa-regular fa-file-lines icon-doc"></i> <i class="fa-brands fa-youtube icon-resource"></i></td>
+                                    <td><i class="fa-solid fa-code icon-practice"></i></td>
+                                    <td><i class="fa-solid fa-circle-plus icon-add"></i></td>
+                                    <td><i class="fa-regular fa-star icon-star"></i></td>
+                                    <td><span class="badge easy">Easy</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Easy -->
+            <div class="q-acc-item">
+                <div class="q-acc-header">
+                    <div class="q-acc-title">
+                        <i class="fa-solid fa-chevron-right"></i> Easy
+                    </div>
+                    <div class="q-acc-progress">
+                        <div class="q-acc-bar"></div>
+                        0 / 8
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medium -->
+            <div class="q-acc-item">
+                <div class="q-acc-header">
+                    <div class="q-acc-title">
+                        <i class="fa-solid fa-chevron-right"></i> Medium
+                    </div>
+                    <div class="q-acc-progress">
+                        <div class="q-acc-bar"></div>
+                        0 / 12
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hard -->
+            <div class="q-acc-item">
+                <div class="q-acc-header">
+                    <div class="q-acc-title">
+                        <i class="fa-solid fa-chevron-right"></i> Hard
+                    </div>
+                    <div class="q-acc-progress">
+                        <div class="q-acc-bar"></div>
+                        0 / 11
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expert -->
+            <div class="q-acc-item">
+                <div class="q-acc-header">
+                    <div class="q-acc-title">
+                        <i class="fa-solid fa-chevron-right"></i> Expert
+                    </div>
+                    <div class="q-acc-progress">
+                        <div class="q-acc-bar"></div>
+                        0 / 7
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Simple accordion toggle logic
+        document.querySelectorAll('.q-acc-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                item.classList.toggle('expanded');
+            });
+        });
+    </script>
+</body>
+</html>

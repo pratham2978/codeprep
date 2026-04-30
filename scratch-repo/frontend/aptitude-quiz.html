@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptitude Quiz | CodePrep</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            overflow-y: auto;
+        }
+
+        .quiz-wrapper {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 100px 20px 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Top bar */
+        .quiz-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 16px 24px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer-display {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: rgba(251, 191, 36, 0.08);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            padding: 8px 18px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .timer-display.danger {
+            background: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.3);
+            animation: pulse-danger 1s infinite;
+        }
+
+        @keyframes pulse-danger {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .progress-bar-outer {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            margin: 0 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #fbbf24, #f97316);
+            border-radius: 6px;
+            transition: width 0.4s;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 20px;
+            padding: 36px;
+            margin-bottom: 20px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .q-index {
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .q-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        @media(max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: #cbd5e1;
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            transition: 0.2s;
+        }
+
+        .option-btn:hover:not(.selected):not(.disabled) {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(251, 191, 36, 0.3);
+            color: #fff;
+        }
+
+        .option-btn:hover:not(.selected):not(.disabled) .option-letter {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+        }
+
+        .option-btn.selected {
+            border-color: rgba(251, 191, 36, 0.6);
+            background: rgba(251, 191, 36, 0.08);
+            color: #fff;
+        }
+
+        .option-btn.selected .option-letter {
+            background: #fbbf24;
+            color: #000;
+        }
+
+        /* Review mode colours */
+        .option-btn.correct {
+            border-color: rgba(16, 185, 129, 0.6);
+            background: rgba(16, 185, 129, 0.08);
+            color: #fff;
+        }
+
+        .option-btn.correct .option-letter {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .option-btn.wrong {
+            border-color: rgba(239, 68, 68, 0.5);
+            background: rgba(239, 68, 68, 0.06);
+            color: #fff;
+        }
+
+        .option-btn.wrong .option-letter {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            gap: 14px;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #fbbf24, #f97316);
+            color: #000;
+            border: none;
+        }
+
+        .nav-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(251, 191, 36, 0.3);
+        }
+
+        .question-dots {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .q-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .q-dot.answered {
+            background: #fbbf24;
+        }
+
+        .q-dot.current {
+            background: #f97316;
+            transform: scale(1.4);
+        }
+
+        /* Result Panel */
+        #result-panel {
+            display: none;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .big-score {
+            font-size: 5rem;
+            font-weight: 800;
+            font-family: 'Fira Code', monospace;
+            background: linear-gradient(135deg, #fbbf24, #f97316);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .review-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .explanation-box {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 10px;
+            padding: 14px;
+            margin-top: 14px;
+            color: #6ee7b7;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Name modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-box {
+            background: #1a1d2d;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 460px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-input {
+            width: 100%;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 14px 18px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: #fbbf24;
+        }
+
+        .loading-screen {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .spinner {
+            font-size: 3rem;
+            color: #fbbf24;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-system">
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Name Modal -->
+    <div class="modal-overlay" id="name-modal">
+        <div class="modal-box">
+            <i class="fa-solid fa-user-astronaut"
+                style="font-size:3rem;color:#fbbf24;margin-bottom:16px;display:block;"></i>
+            <h2 style="margin:0 0 8px;">What's your name?</h2>
+            <p style="color:#94a3b8;margin:0;">It will appear on the leaderboard after your test.</p>
+            <input type="text" id="username-input" class="modal-input" placeholder="Enter your name..." maxlength="30">
+            <button class="nav-btn primary" style="width:100%;justify-content:center;font-size:1rem;"
+                onclick="startQuiz()">
+                <i class="fa-solid fa-rocket"></i> Begin Test
+            </button>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-brand"><i class="fa-solid fa-code text-gradient"></i> CodePrep</div>
+        <div class="nav-links">
+            <a href="aptitude.html">← Back to Aptitude</a>
+        </div>
+    </nav>
+
+    <div class="quiz-wrapper">
+
+        <!-- Loading State -->
+        <div class="loading-screen" id="loading-screen" style="display:none;">
+            <i class="fa-solid fa-circle-notch spinner"></i>
+            <p style="color:#94a3b8;margin-top:20px;">Fetching questions from database...</p>
+        </div>
+
+        <!-- Quiz Panel -->
+        <div id="quiz-panel" style="display:none;">
+            <!-- Top bar -->
+            <div class="quiz-topbar">
+                <div class="quiz-title" id="quiz-title-label">
+                    <i class="fa-solid fa-brain" style="color:#fbbf24;"></i> Loading...
+                </div>
+                <div class="progress-bar-outer">
+                    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+                </div>
+                <div class="timer-display" id="timer">10:00</div>
+            </div>
+
+            <!-- Question dots -->
+            <div class="question-dots" id="q-dots" style="margin-bottom:24px;"></div>
+
+            <!-- Question Card -->
+            <div class="question-card" id="q-card">
+                <div class="q-index" id="q-index">Question 1 of 10</div>
+                <div class="q-text" id="q-text">Loading question...</div>
+                <div class="options-grid" id="options-grid"></div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="nav-buttons">
+                <button class="nav-btn" id="prev-btn" onclick="navigate(-1)"><i class="fa-solid fa-arrow-left"></i>
+                    Previous</button>
+                <button class="nav-btn primary" id="next-btn" onclick="navigate(1)">Next <i
+                        class="fa-solid fa-arrow-right"></i></button>
+                <button class="nav-btn primary" id="submit-btn" style="display:none;" onclick="submitTest()"><i
+                        class="fa-solid fa-paper-plane"></i> Submit Test</button>
+            </div>
+        </div>
+
+        <!-- Result Panel -->
+        <div id="result-panel">
+            <div class="result-card">
+                <p style="color:#94a3b8;margin:0 0 10px;">Your Score</p>
+                <div class="big-score" id="score-text">0/0</div>
+                <p id="score-msg" style="font-size:1.2rem;margin:10px 0 20px;"></p>
+                <div id="badge-area"></div>
+                <div style="display:flex;gap:14px;justify-content:center;margin-top:24px;flex-wrap:wrap;">
+                    <a href="aptitude.html" class="nav-btn"><i class="fa-solid fa-house"></i> Back to Hub</a>
+                    <button class="nav-btn primary" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i>
+                        Retry Test</button>
+                </div>
+            </div>
+
+            <h2 style="margin-bottom:20px;font-size:1.4rem;"><i class="fa-solid fa-clipboard-list"
+                    style="color:#fbbf24;"></i> Detailed Review</h2>
+            <div id="review-list"></div>
+        </div>
+
+    </div>
+
+    <script>
+        const API = 'http://localhost:8080/api/aptitude';
+        const params = new URLSearchParams(window.location.search);
+        const CATEGORY = params.get('category') || 'quantitative';
+
+        let questions = [];
+        let answers = {};
+        let currentIdx = 0;
+        let username = 'Anonymous';
+        let timerInterval;
+        let timeLeft = 10 * 60;
+
+        // --- Name modal ---
+        document.getElementById('username-input').addEventListener('keyup', e => {
+            if (e.key === 'Enter') startQuiz();
+        });
+
+        async function startQuiz() {
+            username = document.getElementById('username-input').value.trim() || 'Anonymous';
+            document.getElementById('name-modal').style.display = 'none';
+            document.getElementById('loading-screen').style.display = 'block';
+
+            try {
+                const res = await fetch(`${API}/questions?category=${CATEGORY}&limit=10`);
+                questions = await res.json();
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('quiz-panel').style.display = 'block';
+
+                const icons = { quantitative: 'fa-square-root-variable', logical: 'fa-puzzle-piece', verbal: 'fa-spell-check' };
+                document.getElementById('quiz-title-label').innerHTML = `<i class="fa-solid ${icons[CATEGORY] || 'fa-brain'}" style="color:#fbbf24;"></i> ${CATEGORY.charAt(0).toUpperCase() + CATEGORY.slice(1)} Test`;
+
+                buildDots();
+                renderQuestion();
+                startTimer();
+            } catch (e) {
+                document.getElementById('loading-screen').innerHTML = `<div style="color:#ef4444;font-size:1.1rem;"><i class="fa-solid fa-triangle-exclamation"></i> Could not connect to backend at localhost:8080.<br><small style="color:#64748b;">Please ensure your Spring Boot server is running.</small></div>`;
+            }
+        }
+
+        function buildDots() {
+            const dots = document.getElementById('q-dots');
+            dots.innerHTML = questions.map((_, i) =>
+                `<div class="q-dot ${i === 0 ? 'current' : ''}" id="dot-${i}" onclick="goTo(${i})"></div>`
+            ).join('');
+        }
+
+        function updateDots() {
+            questions.forEach((_, i) => {
+                const d = document.getElementById(`dot-${i}`);
+                d.className = 'q-dot';
+                if (answers[questions[i].id] !== undefined) d.classList.add('answered');
+                if (i === currentIdx) d.classList.add('current');
+            });
+        }
+
+        function renderQuestion() {
+            const q = questions[currentIdx];
+            const total = questions.length;
+
+            document.getElementById('q-index').textContent = `Question ${currentIdx + 1} of ${total}`;
+            document.getElementById('q-text').textContent = q.text;
+            document.getElementById('progress-fill').style.width = `${((currentIdx + 1) / total) * 100}%`;
+
+            const opts = document.getElementById('options-grid');
+            const letters = ['A', 'B', 'C', 'D'];
+            const values = [q.optionA, q.optionB, q.optionC, q.optionD];
+
+            opts.innerHTML = letters.map((l, idx) => `
+                <button class="option-btn ${answers[q.id] === l ? 'selected' : ''}" id="opt-${l}" onclick="selectOption('${l}')">
+                    <div class="option-letter">${l}</div>
+                    <span>${values[idx]}</span>
+                </button>
+            `).join('');
+
+            const isLast = currentIdx === total - 1;
+            document.getElementById('next-btn').style.display = isLast ? 'none' : 'flex';
+            document.getElementById('submit-btn').style.display = isLast ? 'flex' : 'none';
+            document.getElementById('prev-btn').style.opacity = currentIdx === 0 ? '0.3' : '1';
+            document.getElementById('prev-btn').disabled = currentIdx === 0;
+
+            // Refresh animation
+            const card = document.getElementById('q-card');
+            card.style.animation = 'none';
+            void card.offsetWidth;
+            card.style.animation = 'slideIn 0.3s ease-out';
+
+            updateDots();
+        }
+
+        function selectOption(letter) {
+            const q = questions[currentIdx];
+            answers[q.id] = letter;
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            document.getElementById(`opt-${letter}`).classList.add('selected');
+            updateDots();
+        }
+
+        function navigate(dir) {
+            const next = currentIdx + dir;
+            if (next >= 0 && next < questions.length) {
+                currentIdx = next;
+                renderQuestion();
+            }
+        }
+
+        function goTo(idx) { currentIdx = idx; renderQuestion(); }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const m = Math.floor(timeLeft / 60);
+                const s = timeLeft % 60;
+                const display = document.getElementById('timer');
+                display.textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+                if (timeLeft <= 60) display.classList.add('danger');
+                if (timeLeft <= 0) { clearInterval(timerInterval); submitTest(); }
+            }, 1000);
+        }
+
+        async function submitTest() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-panel').style.display = 'none';
+
+            // Build answer payload with string keys
+            const answersPayload = {};
+            Object.keys(answers).forEach(k => answersPayload[String(k)] = answers[k]);
+
+            const payload = { username, category: CATEGORY, answers: answersPayload };
+
+            try {
+                const res = await fetch(`${API}/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await res.json();
+                showResult(result);
+            } catch (e) {
+                document.getElementById('result-panel').style.display = 'block';
+                document.getElementById('score-text').textContent = 'Error';
+                document.getElementById('score-msg').textContent = 'Could not submit. Backend may be offline.';
+            }
+        }
+
+        function showResult(result) {
+            document.getElementById('result-panel').style.display = 'block';
+            const score = result.score;
+            const total = result.total;
+            const pct = result.percentage;
+
+            document.getElementById('score-text').textContent = `${score}/${total}`;
+
+            let msg = '', badge = '';
+            if (pct >= 90) { msg = '🔥 Outstanding! You are placement-ready!'; badge = `<span style="background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.3);padding:8px 20px;border-radius:20px;font-weight:700;"><i class="fa-solid fa-crown"></i> Top Performer</span>`; }
+            else if (pct >= 70) { msg = '💪 Great job! A little more practice and you\'ll ace it.'; badge = `<span style="background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.3);padding:8px 20px;border-radius:20px;font-weight:700;"><i class="fa-solid fa-check"></i> Good Score</span>`; }
+            else if (pct >= 50) { msg = '📚 Decent! Focus on your weak areas and try again.'; badge = `<span style="background:rgba(96,165,250,0.1);color:#60a5fa;border:1px solid rgba(96,165,250,0.3);padding:8px 20px;border-radius:20px;font-weight:700;"><i class="fa-solid fa-book-open"></i> Keep Practising</span>`; }
+            else { msg = '🔁 Keep going! Every attempt makes you stronger.'; badge = ''; }
+
+            document.getElementById('score-msg').textContent = msg;
+            document.getElementById('badge-area').innerHTML = badge;
+
+            // Detailed review
+            const review = result.review || {};
+            const reviewList = document.getElementById('review-list');
+            reviewList.innerHTML = questions.map((q, i) => {
+                const r = review[String(q.id)];
+                if (!r) return '';
+                const letters = ['A', 'B', 'C', 'D'];
+                const values = [q.optionA, q.optionB, q.optionC, q.optionD];
+                const selectedText = r.selected && letters.includes(r.selected) ? values[letters.indexOf(r.selected)] : 'Unanswered';
+                const correctText = r.correctAnswer && letters.includes(r.correctAnswer) ? values[letters.indexOf(r.correctAnswer)] : r.correctAnswer;
+                return `
+                    <div class="review-item">
+                        <p class="q-index" style="margin-bottom:10px;">Q${i + 1}</p>
+                        <p style="font-weight:600;margin:0 0 14px;">${q.text}</p>
+                        <div style="display:flex;gap:14px;flex-wrap:wrap;">
+                            <span style="padding:6px 14px;border-radius:8px;font-size:0.9rem;background:${r.isCorrect ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)'};color:${r.isCorrect ? '#10b981' : '#ef4444'};border:1px solid ${r.isCorrect ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'};">
+                                <i class="fa-solid ${r.isCorrect ? 'fa-check' : 'fa-xmark'}"></i> Your answer: (${r.selected}) ${selectedText}
+                            </span>
+                            ${!r.isCorrect ? `<span style="padding:6px 14px;border-radius:8px;font-size:0.9rem;background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.3);">
+                                <i class="fa-solid fa-circle-check"></i> Correct: (${r.correctAnswer}) ${correctText}
+                            </span>` : ''}
+                        </div>
+                        <div class="explanation-box"><i class="fa-solid fa-lightbulb"></i> ${r.explanation}</div>
+                    </div>`;
+            }).join('');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>
